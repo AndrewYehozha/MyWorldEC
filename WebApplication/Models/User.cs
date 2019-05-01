@@ -37,6 +37,7 @@ namespace WebApplication.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
         public Nullable<System.DateTime> Birsday { get; set; }
         public Nullable<System.DateTime> DateRegistered { get; set; }
         public Nullable<bool> IsBlocked { get; set; }

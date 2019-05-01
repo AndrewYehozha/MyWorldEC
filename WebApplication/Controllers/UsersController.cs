@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.Web.Http.Results;
 using WebApplication.Services;
 using WebApplication.Models.Response;
+using WebApplication.Models.Request;
 
 namespace WebApplication.Controllers
 {
@@ -26,11 +27,11 @@ namespace WebApplication.Controllers
             _userService = userService;
         }
 
-        // GET: api/Users
+        // GET: api/Users/GetUsers
         [HttpGet]
         public async Task<object> GetUsers()
         {
-            var users = _userService.GetUsers();
+            var users = await _userService.GetUsers();
 
             if (users == null)
             {
@@ -47,7 +48,7 @@ namespace WebApplication.Controllers
             return JsonResults.Success(models);
         }
 
-        // GET: api/Users/5
+        // GET: api/Users/GetUser/5
         [HttpGet]
         public async Task<object> GetUser(int id)
         {
@@ -63,9 +64,9 @@ namespace WebApplication.Controllers
             return JsonResults.Success(model);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Users/EditUser
         [HttpPost]
-        public async Task<object> EditUser(User user)
+        public async Task<object> EditUser(UserRequest user)
         {
             try
             {
@@ -85,9 +86,71 @@ namespace WebApplication.Controllers
                 users.Email = user.Email;
                 users.Birsday = user.Birsday;
 
-                await _userService.UpdateUser(user);
+                await _userService.UpdateUser(users);
 
                 return JsonResults.Success();
+            }
+            catch (Exception ex)
+            {
+                return JsonResults.Error(400, ex.Message);
+            }
+        }
+
+        // POST: api/Users/Registration
+        [HttpPost]
+        public async Task<object> Registration(UserRequest model)
+        {
+            try
+            {
+                var isUserContain = await _userService.CheckUserByEmailAsync(model.Email);
+
+                if (isUserContain)
+                {
+                    return JsonResults.Error(401, "User is already registered");
+                }
+
+                var user = new User
+                {
+                    Email = model.Email,
+                    Password = _userService.HashPassword(model.Password),
+                    IsAdministration = false
+                };
+
+                var newUser = _userService.AddUser(user);
+
+                return JsonResults.Success(new { newUser.Result.Id});
+            }
+            catch (Exception ex)
+            {
+                return JsonResults.Error(400, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<object> Authorization(AuthorizationRequest model)
+        {
+            var user = await _userService.SearchAuthorizationUserAsync(model.Email);
+
+            if (user == null)
+            {
+                return JsonResults.Error(402, "User not registered");
+            }
+
+            if (user.IsBlocked == true)
+            {
+                return JsonResults.Error(403, "The user is blocked");
+            }
+
+            try
+            {
+                var isCorrectPassword = _userService.CheckUserCorrectPassword(model.Password, user.Password);
+
+                if (!isCorrectPassword)
+                {
+                    return JsonResults.Error(405, "Incorrect password");
+                }
+
+                return JsonResults.Success(new {user.Id, user.IsAdministration});
             }
             catch (Exception ex)
             {
@@ -106,7 +169,7 @@ namespace WebApplication.Controllers
             return JsonResults.Success();
         }
 
-        // Util
+        // Utils
         private UserViewModel GetUserModel(User user)
         {
             var model = new UserViewModel
