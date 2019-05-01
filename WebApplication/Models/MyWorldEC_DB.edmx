@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище MyWorldECModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище MyWorldECModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Bonus_Points">
           <Key>
             <PropertyRef Name="Id" />
@@ -52,6 +52,7 @@
           <Property Name="Address" Type="nvarchar" MaxLength="70" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsParking" Type="bit" />
         </EntityType>
         <EntityType Name="Messages">
           <Key>
@@ -153,6 +154,7 @@
           <Property Name="IsBlocked" Type="bit" />
           <Property Name="IsAdministration" Type="bit" />
           <Property Name="BonusScore" Type="int" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Visits_Log">
           <Key>
@@ -520,8 +522,7 @@
             <End Role="Visits_Log" EntitySet="Visits_Log" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MyWorldECModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -580,6 +581,7 @@
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Services" Relationship="Self.Services_Entertainment_Centers" FromRole="Entertainment_Centers" ToRole="Services" />
+          <Property Name="IsParking" Type="Boolean" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -701,6 +703,7 @@
           <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_User" FromRole="Users" ToRole="Ratings" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK_Bilet_User" FromRole="Users" ToRole="Tickets" />
           <NavigationProperty Name="Visits_Log" Relationship="Self.FK_Visits_Log_User" FromRole="Users" ToRole="Visits_Log" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Visits_Log">
           <Key>
@@ -1090,6 +1093,7 @@
           <EntitySetMapping Name="Entertainment_Centers">
             <EntityTypeMapping TypeName="MyWorldECModel.Entertainment_Centers">
               <MappingFragment StoreEntitySet="Entertainment_Centers">
+                <ScalarProperty Name="IsParking" ColumnName="IsParking" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Owner" ColumnName="Owner" />
@@ -1182,6 +1186,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="MyWorldECModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

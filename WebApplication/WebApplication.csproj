@@ -212,6 +212,7 @@
     <Compile Include="Models\Rating.cs">
       <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Request\UserRequest.cs" />
     <Compile Include="Models\Response\UserViewModel.cs" />
     <Compile Include="Models\Service.cs">
       <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
@@ -304,7 +305,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Request\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
