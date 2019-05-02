@@ -10,7 +10,7 @@ namespace WebApplication.Services
 {
     public class ChildrenService
     {
-        private MyWorldECEntities db = new MyWorldECEntities();
+        private MyWorldECEntities2 db = new MyWorldECEntities2();
 
         public async Task<IEnumerable<Children>> GetChildrens()
         {

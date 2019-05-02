@@ -10,7 +10,7 @@ namespace WebApplication.Services
 {
     public class EntertainmentCenterService
     {
-        private MyWorldECEntities db = new MyWorldECEntities();
+        private MyWorldECEntities2 db = new MyWorldECEntities2();
 
         public async Task<IEnumerable<Entertainment_Centers>> GetEntertainment_Centers()
         {
@@ -48,7 +48,7 @@ namespace WebApplication.Services
 
         public async Task<bool> CheckServicesInEC(int idEC, int idService)
         {
-            var result = await db.Services_Entertainment_Centers.Where(m => m.Entertainment_CenterId == idEC && m.ServiceId == idService).FirstAsync();
+            var result = await db.Services_Entertainment_Centers.Where(m => m.Entertainment_CenterId == idEC && m.ServiceId == idService).FirstOrDefaultAsync();
 
             return result != null;
         }

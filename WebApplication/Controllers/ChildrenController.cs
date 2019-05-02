@@ -18,13 +18,10 @@ namespace WebApplication.Controllers
 {
     public class ChildrenController : ApiController
     {
-        private ChildrenService _childrenService;
-        public ChildrenController(ChildrenService childrenService)
-        {
-            _childrenService = childrenService;
-        }
+        private ChildrenService _childrenService = new ChildrenService();
 
         // GET: api/Children
+        [ActionName("GetChildrens")]
         [HttpGet]
         public async Task<object> GetChildrens()
         {
@@ -45,6 +42,7 @@ namespace WebApplication.Controllers
             return JsonResults.Success(models);
         }
 
+        [ActionName("GetChildrensByUserId")]
         [HttpGet]
         public async Task<object> GetChildrensByUserId(int userId)
         {
@@ -66,6 +64,7 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Children/5
+        [ActionName("GetChildren")]
         [HttpGet]
         public async Task<object> GetChildren(int id)
         {
@@ -82,6 +81,7 @@ namespace WebApplication.Controllers
         }
 
         // PUT: api/Children/5
+        [ActionName("EditChildren")]
         [HttpPost]
         public async Task<object> EditChildren(ChildrenRequest model)
         {
@@ -110,6 +110,7 @@ namespace WebApplication.Controllers
         }
 
         // POST: api/Children
+        [ActionName("AddChildren")]
         [HttpPost]
         public async Task<object> AddChildren(ChildrenRequest request)
         {
@@ -134,6 +135,7 @@ namespace WebApplication.Controllers
         }
 
         // DELETE: api/Children/5
+        [ActionName("DeleteChildren")]
         [HttpDelete]
         public async Task<object> DeleteChildren(int id)
         {

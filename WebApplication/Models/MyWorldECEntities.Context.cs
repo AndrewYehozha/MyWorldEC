@@ -13,10 +13,10 @@ namespace WebApplication.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class MyWorldECEntities : DbContext
+    public partial class MyWorldECEntities2 : DbContext
     {
-        public MyWorldECEntities()
-            : base("name=MyWorldECEntities")
+        public MyWorldECEntities2()
+            : base("name=MyWorldECEntities2")
         {
         }
     
