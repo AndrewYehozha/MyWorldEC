@@ -40,6 +40,19 @@ namespace WebApplication.Services
             return result;
         }
 
+        public async Task AddServiceInEntertainment_Center(Services_Entertainment_Centers services_Entertainment_Centers)
+        {
+            var result = db.Services_Entertainment_Centers.Add(services_Entertainment_Centers);
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<bool> CheckServicesInEC(int idEC, int idService)
+        {
+            var result = await db.Services_Entertainment_Centers.Where(m => m.Entertainment_CenterId == idEC && m.ServiceId == idService).FirstAsync();
+
+            return result != null;
+        }
+
         public async Task DeleteEntertainment_Centers(Entertainment_Centers entertainment_Center)
         {
             db.Entertainment_Centers.Remove(entertainment_Center);
