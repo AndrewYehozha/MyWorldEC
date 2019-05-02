@@ -18,14 +18,10 @@ namespace WebApplication.Controllers
 {
     public class ServicesController : ApiController
     {
-        ServicesService _servicesService;
-
-        ServicesController(ServicesService servicesService)
-        {
-            _servicesService = servicesService;
-        }
+        ServicesService _servicesService = new ServicesService();
 
         // GET: api/Services
+        [ActionName("GetServices")]
         [HttpGet]
         public async Task<object> GetServices()
         {
@@ -47,6 +43,7 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Services/5
+        [ActionName("GetService")]
         [HttpGet]
         public async Task<object> GetService(int id)
         {
@@ -63,6 +60,7 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Services/5
+        [ActionName("GetServiceByECenterId")]
         [HttpGet]
         public async Task<object> GetServiceByECenterId(int idEC)
         {
@@ -84,6 +82,7 @@ namespace WebApplication.Controllers
         }
 
         // PUT: api/Services/5
+        [ActionName("EditService")]
         [HttpPost]
         public async Task<object> EditService(ServiceRequest request)
         {
@@ -110,6 +109,7 @@ namespace WebApplication.Controllers
         }
 
         // POST: api/Services
+        [ActionName("AddService")]
         [HttpPost]
         public async Task<object> AddService(ServiceRequest request)
         {
@@ -132,6 +132,7 @@ namespace WebApplication.Controllers
         }
 
         // DELETE: api/Services/5
+        [ActionName("DeleteService")]
         [HttpDelete]
         public async Task<object> DeleteService(int id)
         {

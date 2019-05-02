@@ -13,7 +13,7 @@ namespace WebApplication.Services
 {
     public class UserService
     {
-        private MyWorldECEntities db = new MyWorldECEntities();
+        private MyWorldECEntities2 db = new MyWorldECEntities2();
 
         public async Task<IEnumerable<User>> GetUsers()
         {
@@ -59,7 +59,7 @@ namespace WebApplication.Services
 
         public async Task<User> SearchAuthorizationUserAsync(string email)
         {
-            var user = await db.Users.Where(m => m.Email == email).SingleOrDefaultAsync();
+            var user = await db.Users.Where(m => m.Email == email).FirstOrDefaultAsync();
 
             return user;
         }

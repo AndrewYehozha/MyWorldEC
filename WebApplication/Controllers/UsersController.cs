@@ -20,14 +20,10 @@ namespace WebApplication.Controllers
 {
     public class UsersController : ApiController
     {
-        private UserService _userService;
-
-        public UsersController(UserService userService)
-        {
-            _userService = userService;
-        }
+        private UserService _userService = new UserService();
 
         // GET: api/Users/GetUsers
+        [ActionName("GetUsers")]
         [HttpGet]
         public async Task<object> GetUsers()
         {
@@ -49,6 +45,7 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Users/GetUser/5
+        [ActionName("GetUser")]
         [HttpGet]
         public async Task<object> GetUser(int id)
         {
@@ -64,7 +61,23 @@ namespace WebApplication.Controllers
             return JsonResults.Success(model);
         }
 
+        //[HttpGet]
+        //public async Task<object> ViewUserProfile(int id)
+        //{
+        //    var user = await _userService.GetUser(id);
+
+        //    if (user == null)
+        //    {
+        //        return JsonResults.Error(errorNum: 404, errorMessage: "User not found");
+        //    }
+
+        //    var model = GetUserModel(user);
+
+        //    return JsonResults.Success(model);
+        //}
+
         // PUT: api/Users/EditUser
+        [ActionName("EditUser")]
         [HttpPost]
         public async Task<object> EditUser(UserRequest user)
         {
@@ -97,6 +110,7 @@ namespace WebApplication.Controllers
         }
 
         // POST: api/Users/Registration
+        [ActionName("Registration")]
         [HttpPost]
         public async Task<object> Registration(UserRequest model)
         {
@@ -113,12 +127,13 @@ namespace WebApplication.Controllers
                 {
                     Email = model.Email,
                     Password = _userService.HashPassword(model.Password),
-                    IsAdministration = false
+                    IsAdministration = false,
+                    IsBlocked = false
                 };
 
-                var newUser = _userService.AddUser(user);
+                var newUser = await _userService.AddUser(user);
 
-                return JsonResults.Success(new { newUser.Result.Id});
+                return JsonResults.Success(new { newUser.Id});
             }
             catch (Exception ex)
             {
@@ -126,6 +141,7 @@ namespace WebApplication.Controllers
             }
         }
 
+        [ActionName("Authorization")]
         [HttpPost]
         public async Task<object> Authorization(AuthorizationRequest model)
         {
@@ -159,10 +175,16 @@ namespace WebApplication.Controllers
         }
 
         // DELETE: api/Users/5
+        [ActionName("DeleteUser")]
         [HttpDelete]
         public async Task<object> DeleteUser(int id)
         {
             User user = await _userService.GetUser(id);
+
+            if(user == null)
+            {
+                JsonResults.Error();
+            }
 
             await _userService.DeleteUser(user);
 

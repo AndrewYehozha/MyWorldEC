@@ -18,14 +18,10 @@ namespace WebApplication.Controllers
 {
     public class Entertainment_CentersController : ApiController
     {
-        private EntertainmentCenterService _entertainmentCenterService;
-
-        public Entertainment_CentersController(EntertainmentCenterService entertainmentCenterService)
-        {
-            _entertainmentCenterService = entertainmentCenterService;
-        }
+        private EntertainmentCenterService _entertainmentCenterService = new EntertainmentCenterService();
 
         // GET: api/Entertainment_Centers
+        [ActionName("GetEntertainment_Centers")]
         [HttpGet]
         public async Task<object> GetEntertainment_Centers()
         {
@@ -47,6 +43,7 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Entertainment_Centers/5
+        [ActionName("GetEntertainment_Center")]
         [HttpGet]
         public async Task<object> GetEntertainment_Center(int id)
         {
@@ -63,6 +60,7 @@ namespace WebApplication.Controllers
         }
 
         // PUT: api/Entertainment_Centers/5
+        [ActionName("EditEntertainment_Center")]
         [HttpPost]
         public async Task<object> EditEntertainment_Center(Entertainment_CentersRequest request)
         {
@@ -93,6 +91,7 @@ namespace WebApplication.Controllers
         }
 
         // POST: api/Entertainment_Centers
+        [ActionName("AddEntertainment_Center")]
         [HttpPost]
         public async Task<object> AddEntertainment_Center(Entertainment_CentersRequest request)
         {
@@ -118,6 +117,7 @@ namespace WebApplication.Controllers
             }
         }
 
+        [ActionName("AddServiceToEntertainment_Center")]
         [HttpPost]
         public async Task<object> AddServiceToEntertainment_Center(Services_Entertainment_Centers request)
         {
@@ -141,6 +141,7 @@ namespace WebApplication.Controllers
         }
 
         // DELETE: api/Entertainment_Centers/5
+        [ActionName("DeleteEntertainment_Center")]
         [HttpDelete]
         public async Task<object> DeleteEntertainment_Center(int id)
         {
