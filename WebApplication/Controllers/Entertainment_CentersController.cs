@@ -118,6 +118,28 @@ namespace WebApplication.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<object> AddServiceToEntertainment_Center(Services_Entertainment_Centers request)
+        {
+            try
+            {
+                var isServiceContain = await _entertainmentCenterService.CheckServicesInEC(request.Entertainment_CenterId, request.ServiceId);
+
+                if (isServiceContain)
+                {
+                    return JsonResults.Error(406, "This entertainment center already has this service.");
+                }
+
+                await _entertainmentCenterService.AddServiceInEntertainment_Center(request);
+
+                return JsonResults.Success();
+            }
+            catch (Exception ex)
+            {
+                return JsonResults.Error(400, ex.Message);
+            }
+        }
+
         // DELETE: api/Entertainment_Centers/5
         [HttpDelete]
         public async Task<object> DeleteEntertainment_Center(int id)
