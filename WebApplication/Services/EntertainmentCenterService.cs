@@ -40,10 +40,8 @@ namespace WebApplication.Services
             return result;
         }
 
-        public async Task DeleteEntertainment_Centers(int id)
+        public async Task DeleteEntertainment_Centers(Entertainment_Centers entertainment_Center)
         {
-            var entertainment_Center = await db.Entertainment_Centers.FindAsync(id);
-
             db.Entertainment_Centers.Remove(entertainment_Center);
             await db.SaveChangesAsync();
         }

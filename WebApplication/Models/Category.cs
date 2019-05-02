@@ -12,23 +12,18 @@ namespace WebApplication.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Entertainment_Centers
+    public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Entertainment_Centers()
+        public Category()
         {
-            this.Services_Entertainment_Centers = new HashSet<Services_Entertainment_Centers>();
+            this.Categories_Services = new HashSet<Categories_Services>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Owner { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public Nullable<bool> IsParking { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Services_Entertainment_Centers> Services_Entertainment_Centers { get; set; }
+        public virtual ICollection<Categories_Services> Categories_Services { get; set; }
     }
 }
