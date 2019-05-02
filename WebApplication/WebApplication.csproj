@@ -165,6 +165,7 @@
     <Compile Include="Controllers\ChildrenController.cs" />
     <Compile Include="Controllers\Entertainment_CentersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -172,46 +173,52 @@
     </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="Models\Bonus_Points.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Categories_Services.cs">
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Chat.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Children.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Discount_Cards.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entertainment_Centers.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Message.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MyWorldEC_DB.Context.cs">
+    <Compile Include="Models\MyWorldECEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MyWorldEC_DB.Context.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MyWorldEC_DB.cs">
+    <Compile Include="Models\MyWorldECEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MyWorldEC_DB.Designer.cs">
+    <Compile Include="Models\MyWorldECEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MyWorldEC_DB.edmx</DependentUpon>
+      <DependentUpon>MyWorldECEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Payment.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Preference.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Rating.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Request\AuthorizationRequest.cs" />
     <Compile Include="Models\Request\ChildrenRequest.cs" />
@@ -221,22 +228,25 @@
     <Compile Include="Models\Response\Entertainment_CentersViewModel.cs" />
     <Compile Include="Models\Response\UserViewModel.cs" />
     <Compile Include="Models\Service.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Services_Entertainment_Centers.cs">
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Session.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ticket.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Visits_Log.cs">
-      <DependentUpon>MyWorldEC_DB.tt</DependentUpon>
+      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChildrenService.cs" />
@@ -252,15 +262,15 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Models\MyWorldEC_DB.Context.tt">
+    <Content Include="Models\MyWorldECEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MyWorldEC_DB.edmx</DependentUpon>
-      <LastGenOutput>MyWorldEC_DB.Context.cs</LastGenOutput>
+      <DependentUpon>MyWorldECEntities.edmx</DependentUpon>
+      <LastGenOutput>MyWorldECEntities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\MyWorldEC_DB.tt">
+    <Content Include="Models\MyWorldECEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MyWorldEC_DB.edmx</DependentUpon>
-      <LastGenOutput>MyWorldEC_DB.cs</LastGenOutput>
+      <DependentUpon>MyWorldECEntities.edmx</DependentUpon>
+      <LastGenOutput>MyWorldECEntities.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -283,12 +293,12 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <EntityDeploy Include="Models\MyWorldEC_DB.edmx">
+    <EntityDeploy Include="Models\MyWorldECEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MyWorldEC_DB.Designer.cs</LastGenOutput>
+      <LastGenOutput>MyWorldECEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\MyWorldEC_DB.edmx.diagram">
-      <DependentUpon>MyWorldEC_DB.edmx</DependentUpon>
+    <Content Include="Models\MyWorldECEntities.edmx.diagram">
+      <DependentUpon>MyWorldECEntities.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

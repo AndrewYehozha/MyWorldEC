@@ -26,6 +26,8 @@ namespace WebApplication.Models
         }
     
         public virtual DbSet<Bonus_Points> Bonus_Points { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Categories_Services> Categories_Services { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<Children> Childrens { get; set; }
         public virtual DbSet<Discount_Cards> Discount_Cards { get; set; }
@@ -35,6 +37,7 @@ namespace WebApplication.Models
         public virtual DbSet<Preference> Preferences { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<Service> Services { get; set; }
+        public virtual DbSet<Services_Entertainment_Centers> Services_Entertainment_Centers { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }

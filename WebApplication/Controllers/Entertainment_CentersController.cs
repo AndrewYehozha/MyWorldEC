@@ -64,7 +64,7 @@ namespace WebApplication.Controllers
 
         // PUT: api/Entertainment_Centers/5
         [HttpPost]
-        public async Task<object> PutEntertainment_Center(Entertainment_CentersRequest request)
+        public async Task<object> EditEntertainment_Center(Entertainment_CentersRequest request)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error();
             }
 
-            await _entertainmentCenterService.DeleteEntertainment_Centers(id);
+            await _entertainmentCenterService.DeleteEntertainment_Centers(entertainment_Centers);
 
             return JsonResults.Success();
         }
@@ -145,7 +145,7 @@ namespace WebApplication.Controllers
                 Address = entertainment_Center.Address,
                 Phone = entertainment_Center.Phone,
                 Email = entertainment_Center.Email,
-                IsParking = entertainment_Center.IsParking
+                IsParking = (bool)entertainment_Center.IsParking
             };
 
             return model;

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище MyWorldECModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище MyWorldECModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Bonus_Points">
           <Key>
             <PropertyRef Name="Id" />
@@ -14,6 +14,21 @@
           <Property Name="SeanceId" Type="int" />
           <Property Name="DateOfUse" Type="date" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories_Services">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="IdCategories" Type="int" />
+          <Property Name="IdServices" Type="int" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Chats">
           <Key>
@@ -99,16 +114,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
-          <Property Name="OpeningDate" Type="date" />
+          <Property Name="IdCategories" Type="int" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "MyWorldEC.dbo.Services_Entertainment_Centers" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="Services_Entertainment_Centers">
           <Key>
-            <PropertyRef Name="ServiceId" />
-            <PropertyRef Name="Entertainment_CenterId" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="ServiceId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Entertainment_CenterId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Sessions">
@@ -209,6 +222,30 @@
             </Principal>
             <Dependent Role="Bonus_Points">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Categories_Services_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Categories_Services" Type="Self.Categories_Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Categories_Services">
+              <PropertyRef Name="IdCategories" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Categories_Services_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Categories_Services" Type="Self.Categories_Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Categories_Services">
+              <PropertyRef Name="IdServices" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -418,6 +455,8 @@
         </Association>
         <EntityContainer Name="Хранилище MyWorldECModelContainer">
           <EntitySet Name="Bonus_Points" EntityType="Self.Bonus_Points" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories_Services" EntityType="Self.Categories_Services" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chats" EntityType="Self.Chats" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Childrens" EntityType="Self.Childrens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Discount_Cards" EntityType="Self.Discount_Cards" Schema="dbo" store:Type="Tables" />
@@ -427,16 +466,11 @@
           <EntitySet Name="Preferences" EntityType="Self.Preferences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Services_Entertainment_Centers" EntityType="Self.Services_Entertainment_Centers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visits_Log" EntityType="Self.Visits_Log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Services_Entertainment_Centers" EntityType="Self.Services_Entertainment_Centers" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Services_Entertainment_Centers].[ServiceId] AS [ServiceId], 
-    [Services_Entertainment_Centers].[Entertainment_CenterId] AS [Entertainment_CenterId]
-    FROM [dbo].[Services_Entertainment_Centers] AS [Services_Entertainment_Centers]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Bilet_Seans" Association="Self.FK_Bilet_Seans">
             <End Role="Sessions" EntitySet="Sessions" />
             <End Role="Tickets" EntitySet="Tickets" />
@@ -452,6 +486,14 @@
           <AssociationSet Name="FK_Bonus_Point_User" Association="Self.FK_Bonus_Point_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Bonus_Points" EntitySet="Bonus_Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Categories_Services_Categories" Association="Self.FK_Categories_Services_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Categories_Services" EntitySet="Categories_Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Categories_Services_Services" Association="Self.FK_Categories_Services_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Categories_Services" EntitySet="Categories_Services" />
           </AssociationSet>
           <AssociationSet Name="FK_Chat_User" Association="Self.FK_Chat_User">
             <End Role="Users" EntitySet="Users" />
@@ -522,7 +564,8 @@
             <End Role="Visits_Log" EntitySet="Visits_Log" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MyWorldECModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -537,6 +580,24 @@
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="0" />
           <NavigationProperty Name="Session" Relationship="Self.FK_Bonus_Point_Seans" FromRole="Bonus_Points" ToRole="Sessions" />
           <NavigationProperty Name="User" Relationship="Self.FK_Bonus_Point_User" FromRole="Bonus_Points" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Categories_Services" Relationship="Self.FK_Categories_Services_Categories" FromRole="Categories" ToRole="Categories_Services" />
+        </EntityType>
+        <EntityType Name="Categories_Services">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="IdCategories" Type="Int32" />
+          <Property Name="IdServices" Type="Int32" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Categories_Services_Categories" FromRole="Categories_Services" ToRole="Categories" />
+          <NavigationProperty Name="Service" Relationship="Self.FK_Categories_Services_Services" FromRole="Categories_Services" ToRole="Services" />
         </EntityType>
         <EntityType Name="Chat">
           <Key>
@@ -580,8 +641,8 @@
           <Property Name="Address" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Services" Relationship="Self.Services_Entertainment_Centers" FromRole="Entertainment_Centers" ToRole="Services" />
           <Property Name="IsParking" Type="Boolean" />
+          <NavigationProperty Name="Services_Entertainment_Centers" Relationship="Self.FK_Service_Entertainment_Center_Entertainment_Center" FromRole="Entertainment_Centers" ToRole="Services_Entertainment_Centers" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -636,12 +697,23 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="OpeningDate" Type="DateTime" Precision="0" />
+          <Property Name="IdCategories" Type="Int32" />
+          <NavigationProperty Name="Categories_Services" Relationship="Self.FK_Categories_Services_Services" FromRole="Services" ToRole="Categories_Services" />
           <NavigationProperty Name="Discount_Cards" Relationship="Self.FK_Discount_Card_Service" FromRole="Services" ToRole="Discount_Cards" />
           <NavigationProperty Name="Preferences" Relationship="Self.FK_Preferences_Service" FromRole="Services" ToRole="Preferences" />
           <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_Service" FromRole="Services" ToRole="Ratings" />
           <NavigationProperty Name="Sessions" Relationship="Self.FK_Seans_Service" FromRole="Services" ToRole="Sessions" />
-          <NavigationProperty Name="Entertainment_Centers" Relationship="Self.Services_Entertainment_Centers" FromRole="Services" ToRole="Entertainment_Centers" />
+          <NavigationProperty Name="Services_Entertainment_Centers" Relationship="Self.FK_Service_Entertainment_Center_Service" FromRole="Services" ToRole="Services_Entertainment_Centers" />
+        </EntityType>
+        <EntityType Name="Services_Entertainment_Centers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="ServiceId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Entertainment_CenterId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Entertainment_Centers" Relationship="Self.FK_Service_Entertainment_Center_Entertainment_Center" FromRole="Services_Entertainment_Centers" ToRole="Entertainment_Centers" />
+          <NavigationProperty Name="Service" Relationship="Self.FK_Service_Entertainment_Center_Service" FromRole="Services_Entertainment_Centers" ToRole="Services" />
         </EntityType>
         <EntityType Name="Session">
           <Key>
@@ -693,6 +765,7 @@
           <Property Name="IsBlocked" Type="Boolean" />
           <Property Name="IsAdministration" Type="Boolean" />
           <Property Name="BonusScore" Type="Int32" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Bonus_Points" Relationship="Self.FK_Bonus_Point_User" FromRole="Users" ToRole="Bonus_Points" />
           <NavigationProperty Name="Chats" Relationship="Self.FK_Chat_User" FromRole="Users" ToRole="Chats" />
           <NavigationProperty Name="Childrens" Relationship="Self.FK_Children_User" FromRole="Users" ToRole="Childrens" />
@@ -703,7 +776,6 @@
           <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_User" FromRole="Users" ToRole="Ratings" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK_Bilet_User" FromRole="Users" ToRole="Tickets" />
           <NavigationProperty Name="Visits_Log" Relationship="Self.FK_Visits_Log_User" FromRole="Users" ToRole="Visits_Log" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Visits_Log">
           <Key>
@@ -736,6 +808,30 @@
             </Principal>
             <Dependent Role="Bonus_Points">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Categories_Services_Categories">
+          <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Categories_Services" Type="Self.Categories_Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Categories_Services">
+              <PropertyRef Name="IdCategories" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Categories_Services_Services">
+          <End Role="Services" Type="Self.Service" Multiplicity="0..1" />
+          <End Role="Categories_Services" Type="Self.Categories_Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Categories_Services">
+              <PropertyRef Name="IdServices" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -796,6 +892,18 @@
             </Principal>
             <Dependent Role="Discount_Cards">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Service_Entertainment_Center_Entertainment_Center">
+          <End Role="Entertainment_Centers" Type="Self.Entertainment_Centers" Multiplicity="1" />
+          <End Role="Services_Entertainment_Centers" Type="Self.Services_Entertainment_Centers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entertainment_Centers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Services_Entertainment_Centers">
+              <PropertyRef Name="Entertainment_CenterId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -895,6 +1003,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Service_Entertainment_Center_Service">
+          <End Role="Services" Type="Self.Service" Multiplicity="1" />
+          <End Role="Services_Entertainment_Centers" Type="Self.Services_Entertainment_Centers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Services_Entertainment_Centers">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Bilet_Seans">
           <End Role="Sessions" Type="Self.Session" Multiplicity="0..1" />
           <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
@@ -943,12 +1063,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Services_Entertainment_Centers">
-          <End Role="Entertainment_Centers" Type="Self.Entertainment_Centers" Multiplicity="*" />
-          <End Role="Services" Type="Self.Service" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="MyWorldECEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="MyWorldECEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Bonus_Points" EntityType="Self.Bonus_Points" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Categories_Services" EntityType="Self.Categories_Services" />
           <EntitySet Name="Chats" EntityType="Self.Chat" />
           <EntitySet Name="Childrens" EntityType="Self.Children" />
           <EntitySet Name="Discount_Cards" EntityType="Self.Discount_Cards" />
@@ -958,6 +1076,7 @@
           <EntitySet Name="Preferences" EntityType="Self.Preference" />
           <EntitySet Name="Ratings" EntityType="Self.Rating" />
           <EntitySet Name="Services" EntityType="Self.Service" />
+          <EntitySet Name="Services_Entertainment_Centers" EntityType="Self.Services_Entertainment_Centers" />
           <EntitySet Name="Sessions" EntityType="Self.Session" />
           <EntitySet Name="Tickets" EntityType="Self.Ticket" />
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -969,6 +1088,14 @@
           <AssociationSet Name="FK_Bonus_Point_User" Association="Self.FK_Bonus_Point_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Bonus_Points" EntitySet="Bonus_Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Categories_Services_Categories" Association="Self.FK_Categories_Services_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Categories_Services" EntitySet="Categories_Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Categories_Services_Services" Association="Self.FK_Categories_Services_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Categories_Services" EntitySet="Categories_Services" />
           </AssociationSet>
           <AssociationSet Name="FK_Chat_User" Association="Self.FK_Chat_User">
             <End Role="Users" EntitySet="Users" />
@@ -989,6 +1116,10 @@
           <AssociationSet Name="FK_Discount_Card_User" Association="Self.FK_Discount_Card_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Discount_Cards" EntitySet="Discount_Cards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Service_Entertainment_Center_Entertainment_Center" Association="Self.FK_Service_Entertainment_Center_Entertainment_Center">
+            <End Role="Entertainment_Centers" EntitySet="Entertainment_Centers" />
+            <End Role="Services_Entertainment_Centers" EntitySet="Services_Entertainment_Centers" />
           </AssociationSet>
           <AssociationSet Name="FK_Message_User" Association="Self.FK_Message_User">
             <End Role="Users" EntitySet="Users" />
@@ -1022,6 +1153,10 @@
             <End Role="Services" EntitySet="Services" />
             <End Role="Sessions" EntitySet="Sessions" />
           </AssociationSet>
+          <AssociationSet Name="FK_Service_Entertainment_Center_Service" Association="Self.FK_Service_Entertainment_Center_Service">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Services_Entertainment_Centers" EntitySet="Services_Entertainment_Centers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Bilet_Seans" Association="Self.FK_Bilet_Seans">
             <End Role="Sessions" EntitySet="Sessions" />
             <End Role="Tickets" EntitySet="Tickets" />
@@ -1038,17 +1173,13 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Visits_Log" EntitySet="Visits_Log" />
           </AssociationSet>
-          <AssociationSet Name="Services_Entertainment_Centers" Association="Self.Services_Entertainment_Centers">
-            <End Role="Entertainment_Centers" EntitySet="Entertainment_Centers" />
-            <End Role="Services" EntitySet="Services" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище MyWorldECModelContainer" CdmEntityContainer="MyWorldECEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище MyWorldECModelContainer" CdmEntityContainer="MyWorldECEntities2">
           <EntitySetMapping Name="Bonus_Points">
             <EntityTypeMapping TypeName="MyWorldECModel.Bonus_Points">
               <MappingFragment StoreEntitySet="Bonus_Points">
@@ -1057,6 +1188,23 @@
                 <ScalarProperty Name="SeanceId" ColumnName="SeanceId" />
                 <ScalarProperty Name="DateOfUse" ColumnName="DateOfUse" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="MyWorldECModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories_Services">
+            <EntityTypeMapping TypeName="MyWorldECModel.Categories_Services">
+              <MappingFragment StoreEntitySet="Categories_Services">
+                <ScalarProperty Name="IdCategories" ColumnName="IdCategories" />
+                <ScalarProperty Name="IdServices" ColumnName="IdServices" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1093,13 +1241,13 @@
           <EntitySetMapping Name="Entertainment_Centers">
             <EntityTypeMapping TypeName="MyWorldECModel.Entertainment_Centers">
               <MappingFragment StoreEntitySet="Entertainment_Centers">
-                <ScalarProperty Name="IsParking" ColumnName="IsParking" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Owner" ColumnName="Owner" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsParking" ColumnName="IsParking" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1151,7 +1299,16 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="OpeningDate" ColumnName="OpeningDate" />
+                <ScalarProperty Name="IdCategories" ColumnName="IdCategories" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services_Entertainment_Centers">
+            <EntityTypeMapping TypeName="MyWorldECModel.Services_Entertainment_Centers">
+              <MappingFragment StoreEntitySet="Services_Entertainment_Centers">
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Entertainment_CenterId" ColumnName="Entertainment_CenterId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1186,7 +1343,6 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="MyWorldECModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -1200,6 +1356,7 @@
                 <ScalarProperty Name="IsBlocked" ColumnName="IsBlocked" />
                 <ScalarProperty Name="IsAdministration" ColumnName="IsAdministration" />
                 <ScalarProperty Name="BonusScore" ColumnName="BonusScore" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1212,14 +1369,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Services_Entertainment_Centers" TypeName="MyWorldECModel.Services_Entertainment_Centers" StoreEntitySet="Services_Entertainment_Centers">
-            <EndProperty Name="Entertainment_Centers">
-              <ScalarProperty Name="Id" ColumnName="Entertainment_CenterId" />
-            </EndProperty>
-            <EndProperty Name="Services">
-              <ScalarProperty Name="Id" ColumnName="ServiceId" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

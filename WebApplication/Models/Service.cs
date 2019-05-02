@@ -17,18 +17,21 @@ namespace WebApplication.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Service()
         {
+            this.Categories_Services = new HashSet<Categories_Services>();
             this.Discount_Cards = new HashSet<Discount_Cards>();
             this.Preferences = new HashSet<Preference>();
             this.Ratings = new HashSet<Rating>();
             this.Sessions = new HashSet<Session>();
-            this.Entertainment_Centers = new HashSet<Entertainment_Centers>();
+            this.Services_Entertainment_Centers = new HashSet<Services_Entertainment_Centers>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public Nullable<System.DateTime> OpeningDate { get; set; }
+        public Nullable<int> IdCategories { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Categories_Services> Categories_Services { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Discount_Cards> Discount_Cards { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -38,6 +41,6 @@ namespace WebApplication.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Session> Sessions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Entertainment_Centers> Entertainment_Centers { get; set; }
+        public virtual ICollection<Services_Entertainment_Centers> Services_Entertainment_Centers { get; set; }
     }
 }
