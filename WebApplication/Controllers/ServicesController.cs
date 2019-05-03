@@ -81,6 +81,30 @@ namespace WebApplication.Controllers
             return JsonResults.Success(models);
         }
 
+        // GET: api/Services/5
+        [ActionName("ServiceView")]
+        [HttpGet]
+        public async Task<object> ServiceView(int idService)
+        {
+            var service = await _servicesService.GetService(idService);
+            var categories = await _servicesService.GetCategoryToService(idService);
+
+            if (service == null)
+            {
+                return JsonResults.Error(errorNum: 404, errorMessage: "Service not found");
+            }
+
+            var model = new ServiceCategoryViewModel
+            {
+                Id = service.Id,
+                Name = service.Name,
+                Description = service.Description,
+                Categories = categories
+            };
+
+            return JsonResults.Success(model);
+        }
+
         // PUT: api/Services/5
         [ActionName("EditService")]
         [HttpPost]
@@ -131,6 +155,30 @@ namespace WebApplication.Controllers
             }
         }
 
+        // POST: api/Services
+        [ActionName("AddCategoryToService")]
+        [HttpPost]
+        public async Task<object> AddCategoryToService(Categories_Services request)
+        {
+            try
+            {
+                var isCategoryContain = await _servicesService.CheckCategoryInServices((int)request.IdCategories, (int)request.IdServices);
+
+                if (isCategoryContain)
+                {
+                    return JsonResults.Error(406, "This service already has this category.");
+                }
+
+                await _servicesService.AddCategoryToService(request);
+
+                return JsonResults.Success();
+            }
+            catch (Exception ex)
+            {
+                return JsonResults.Error(400, ex.Message);
+            }
+        }
+        
         // DELETE: api/Services/5
         [ActionName("DeleteService")]
         [HttpDelete]
