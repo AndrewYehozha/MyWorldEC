@@ -58,10 +58,5 @@ namespace WebApplication.Services
             db.Entertainment_Centers.Remove(entertainment_Center);
             await db.SaveChangesAsync();
         }
-
-        private bool Entertainment_CentersExists(int id)
-        {
-            return db.Entertainment_Centers.Count(e => e.Id == id) > 0;
-        }
     }
 }

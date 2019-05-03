@@ -52,10 +52,5 @@ namespace WebApplication.Services
             db.Childrens.Remove(children);
             await db.SaveChangesAsync();
         }
-
-        private bool ChildrenExists(int id)
-        {
-            return db.Childrens.Count(e => e.Id == id) > 0;
-        }
     }
 }

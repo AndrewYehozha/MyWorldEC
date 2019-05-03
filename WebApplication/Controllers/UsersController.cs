@@ -128,7 +128,9 @@ namespace WebApplication.Controllers
                     Email = model.Email,
                     Password = _userService.HashPassword(model.Password),
                     IsAdministration = false,
-                    IsBlocked = false
+                    IsBlocked = false,
+                    DateRegistered = DateTime.Now.Date,
+                    BonusScore = 0
                 };
 
                 var newUser = await _userService.AddUser(user);

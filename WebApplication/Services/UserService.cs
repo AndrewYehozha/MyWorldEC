@@ -69,11 +69,6 @@ namespace WebApplication.Services
             return HashPassword(enteredPassword) == hashUserPassword ? true : false;
         }
 
-        private bool UserExists(int id)
-        {
-            return db.Users.Count(e => e.Id == id) > 0;
-        }
-
         // Util
         public string HashPassword(string password)
         {
