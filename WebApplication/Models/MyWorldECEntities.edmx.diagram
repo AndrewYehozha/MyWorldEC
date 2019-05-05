@@ -21,7 +21,6 @@
         <EntityTypeShape EntityType="MyWorldECModel.Session" Width="1.5" PointX="3.75" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MyWorldECModel.Ticket" Width="1.5" PointX="6" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MyWorldECModel.User" Width="1.5" PointX="0.75" PointY="12.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyWorldECModel.Visits_Log" Width="1.5" PointX="9" PointY="11.25" IsExpanded="true" />
         <AssociationConnector Association="MyWorldECModel.FK_Bonus_Point_Seans" ManuallyRouted="false" />
         <AssociationConnector Association="MyWorldECModel.FK_Bonus_Point_User" ManuallyRouted="false" />
         <AssociationConnector Association="MyWorldECModel.FK_Categories_Services_Categories" ManuallyRouted="false" />
@@ -42,9 +41,7 @@
         <AssociationConnector Association="MyWorldECModel.FK_Seans_Service" ManuallyRouted="false" />
         <AssociationConnector Association="MyWorldECModel.FK_Service_Entertainment_Center_Service" ManuallyRouted="false" />
         <AssociationConnector Association="MyWorldECModel.FK_Bilet_Seans" ManuallyRouted="false" />
-        <AssociationConnector Association="MyWorldECModel.FK_Visits_Log_Seans" ManuallyRouted="false" />
         <AssociationConnector Association="MyWorldECModel.FK_Bilet_User" ManuallyRouted="false" />
-        <AssociationConnector Association="MyWorldECModel.FK_Visits_Log_User" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

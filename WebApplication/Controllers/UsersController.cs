@@ -79,8 +79,13 @@ namespace WebApplication.Controllers
         // PUT: api/Users/EditUser
         [ActionName("EditUser")]
         [HttpPost]
-        public async Task<object> EditUser(UserRequest user)
+        public async Task<object> EditUser(UserEditRequest user)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var users = await _userService.GetUser(user.Id);
@@ -112,8 +117,13 @@ namespace WebApplication.Controllers
         // POST: api/Users/Registration
         [ActionName("Registration")]
         [HttpPost]
-        public async Task<object> Registration(UserRequest model)
+        public async Task<object> Registration(UserRegistredRequest model)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var isUserContain = await _userService.CheckUserByEmailAsync(model.Email);
@@ -125,6 +135,8 @@ namespace WebApplication.Controllers
 
                 var user = new User
                 {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
                     Email = model.Email,
                     Password = _userService.HashPassword(model.Password),
                     IsAdministration = false,
@@ -147,6 +159,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> Authorization(AuthorizationRequest model)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             var user = await _userService.SearchAuthorizationUserAsync(model.Email);
 
             if (user == null)

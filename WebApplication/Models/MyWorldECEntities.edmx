@@ -168,14 +168,6 @@
           <Property Name="BonusScore" Type="int" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Visits_Log">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="SeansId" Type="int" Nullable="false" />
-        </EntityType>
         <Association Name="FK_Bilet_Seans">
           <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
           <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
@@ -428,30 +420,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Visits_Log_Seans">
-          <End Role="Sessions" Type="Self.Sessions" Multiplicity="1" />
-          <End Role="Visits_Log" Type="Self.Visits_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sessions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visits_Log">
-              <PropertyRef Name="SeansId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Visits_Log_User">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Visits_Log" Type="Self.Visits_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visits_Log">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="Хранилище MyWorldECModelContainer">
           <EntitySet Name="Bonus_Points" EntityType="Self.Bonus_Points" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
@@ -469,7 +437,6 @@
           <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Visits_Log" EntityType="Self.Visits_Log" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Bilet_Seans" Association="Self.FK_Bilet_Seans">
             <End Role="Sessions" EntitySet="Sessions" />
             <End Role="Tickets" EntitySet="Tickets" />
@@ -554,15 +521,7 @@
             <End Role="Services" EntitySet="Services" />
             <End Role="Services_Entertainment_Centers" EntitySet="Services_Entertainment_Centers" />
           </AssociationSet>
-          <AssociationSet Name="FK_Visits_Log_Seans" Association="Self.FK_Visits_Log_Seans">
-            <End Role="Sessions" EntitySet="Sessions" />
-            <End Role="Visits_Log" EntitySet="Visits_Log" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Visits_Log_User" Association="Self.FK_Visits_Log_User">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Visits_Log" EntitySet="Visits_Log" />
-          </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -730,7 +689,6 @@
           <NavigationProperty Name="Payments" Relationship="Self.FK_Payment_Seans" FromRole="Sessions" ToRole="Payments" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Seans_Service" FromRole="Sessions" ToRole="Services" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK_Bilet_Seans" FromRole="Sessions" ToRole="Tickets" />
-          <NavigationProperty Name="Visits_Log" Relationship="Self.FK_Visits_Log_Seans" FromRole="Sessions" ToRole="Visits_Log" />
         </EntityType>
         <EntityType Name="Ticket">
           <Key>
@@ -772,17 +730,6 @@
           <NavigationProperty Name="Preferences" Relationship="Self.FK_Preferences_User" FromRole="Users" ToRole="Preferences" />
           <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_User" FromRole="Users" ToRole="Ratings" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK_Bilet_User" FromRole="Users" ToRole="Tickets" />
-          <NavigationProperty Name="Visits_Log" Relationship="Self.FK_Visits_Log_User" FromRole="Users" ToRole="Visits_Log" />
-        </EntityType>
-        <EntityType Name="Visits_Log">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="SeansId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Session" Relationship="Self.FK_Visits_Log_Seans" FromRole="Visits_Log" ToRole="Sessions" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Visits_Log_User" FromRole="Visits_Log" ToRole="Users" />
         </EntityType>
         <Association Name="FK_Bonus_Point_Seans">
           <End Role="Sessions" Type="Self.Session" Multiplicity="0..1" />
@@ -1024,18 +971,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Visits_Log_Seans">
-          <End Role="Sessions" Type="Self.Session" Multiplicity="1" />
-          <End Role="Visits_Log" Type="Self.Visits_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sessions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visits_Log">
-              <PropertyRef Name="SeansId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Bilet_User">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
@@ -1044,18 +979,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Tickets">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Visits_Log_User">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Visits_Log" Type="Self.Visits_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visits_Log">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1077,7 +1000,6 @@
           <EntitySet Name="Sessions" EntityType="Self.Session" />
           <EntitySet Name="Tickets" EntityType="Self.Ticket" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="Visits_Log" EntityType="Self.Visits_Log" />
           <AssociationSet Name="FK_Bonus_Point_Seans" Association="Self.FK_Bonus_Point_Seans">
             <End Role="Sessions" EntitySet="Sessions" />
             <End Role="Bonus_Points" EntitySet="Bonus_Points" />
@@ -1158,17 +1080,9 @@
             <End Role="Sessions" EntitySet="Sessions" />
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Visits_Log_Seans" Association="Self.FK_Visits_Log_Seans">
-            <End Role="Sessions" EntitySet="Sessions" />
-            <End Role="Visits_Log" EntitySet="Visits_Log" />
-          </AssociationSet>
           <AssociationSet Name="FK_Bilet_User" Association="Self.FK_Bilet_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Tickets" EntitySet="Tickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Visits_Log_User" Association="Self.FK_Visits_Log_User">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Visits_Log" EntitySet="Visits_Log" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -1353,15 +1267,6 @@
                 <ScalarProperty Name="IsAdministration" ColumnName="IsAdministration" />
                 <ScalarProperty Name="BonusScore" ColumnName="BonusScore" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Visits_Log">
-            <EntityTypeMapping TypeName="MyWorldECModel.Visits_Log">
-              <MappingFragment StoreEntitySet="Visits_Log">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="SeansId" ColumnName="SeansId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -52,14 +52,14 @@ namespace WebApplication.Services
 
         public async Task<bool> CheckUserByEmailAsync(string email)
         {
-            var user = await SearchAuthorizationUserAsync(email);
+            var user = await db.Users.Where(m => m.Email == email).FirstOrDefaultAsync();
 
             return user != null;
         }
 
         public async Task<User> SearchAuthorizationUserAsync(string email)
         {
-            var user = await db.Users.Where(m => m.Email == email).FirstOrDefaultAsync();
+            var user = await db.Users.Where(m => m.Email == email || m.Phone == email).FirstOrDefaultAsync();
 
             return user;
         }
