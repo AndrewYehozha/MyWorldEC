@@ -51,8 +51,9 @@
         </EntityType>
         <EntityType Name="Discount_Cards">
           <Key>
-            <PropertyRef Name="NumberCard" />
+            <PropertyRef Name="Id" />
           </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NumberCard" Type="decimal" Precision="16" Scale="0" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="ServiceId" Type="int" />
@@ -521,7 +522,7 @@
             <End Role="Services" EntitySet="Services" />
             <End Role="Services_Entertainment_Centers" EntitySet="Services_Entertainment_Centers" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -580,13 +581,14 @@
         </EntityType>
         <EntityType Name="Discount_Cards">
           <Key>
-            <PropertyRef Name="NumberCard" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="NumberCard" Type="Decimal" Precision="16" Scale="0" Nullable="false" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="ServiceId" Type="Int32" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Discount_Card_Service" FromRole="Discount_Cards" ToRole="Services" />
           <NavigationProperty Name="User" Relationship="Self.FK_Discount_Card_User" FromRole="Discount_Cards" ToRole="Users" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Entertainment_Centers">
           <Key>
@@ -1143,6 +1145,7 @@
           <EntitySetMapping Name="Discount_Cards">
             <EntityTypeMapping TypeName="MyWorldECModel.Discount_Cards">
               <MappingFragment StoreEntitySet="Discount_Cards">
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NumberCard" ColumnName="NumberCard" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />

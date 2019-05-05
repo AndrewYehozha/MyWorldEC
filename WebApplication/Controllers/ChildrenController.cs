@@ -96,7 +96,7 @@ namespace WebApplication.Controllers
 
                 if (children == null)
                 {
-                    JsonResults.Error(404, "It`s children center not found");
+                    return JsonResults.Error(404, "It`s children center not found");
                 }
 
                 children.FirstName = model.FirstName;

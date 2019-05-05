@@ -75,7 +75,7 @@ namespace WebApplication.Controllers
 
                 if (entertainment_Center == null)
                 {
-                    JsonResults.Error(404, "It`s entertainment center not found");
+                    return JsonResults.Error(404, "It`s entertainment center not found");
                 }
 
                 entertainment_Center.Name = request.Name;

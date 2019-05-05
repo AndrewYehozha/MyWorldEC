@@ -92,7 +92,7 @@ namespace WebApplication.Controllers
 
                 if (users == null)
                 {
-                    JsonResults.Error(404, "It`s user not found");
+                    return JsonResults.Error(404, "It`s user not found");
                 }
 
                 users.FirstName = user.FirstName;

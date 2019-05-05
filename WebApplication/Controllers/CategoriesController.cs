@@ -97,7 +97,7 @@ namespace WebApplication.Controllers
 
                 if (category == null)
                 {
-                    JsonResults.Error(404, "It`s category not found");
+                    return JsonResults.Error(404, "It`s category not found");
                 }
 
                 category.Name = request.Name;
