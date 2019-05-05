@@ -64,6 +64,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> EditEntertainment_Center(Entertainment_CentersRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var entertainment_Center = await _entertainmentCenterService.GetEntertainment_Center(request.Id);
@@ -95,6 +100,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> AddEntertainment_Center(Entertainment_CentersRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var model = new Entertainment_Centers

@@ -42,6 +42,5 @@ namespace WebApplication.Models
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Visits_Log> Visits_Log { get; set; }
     }
 }

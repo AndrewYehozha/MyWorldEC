@@ -85,6 +85,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> EditChildren(ChildrenRequest model)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var children = await _childrenService.GetChildren(model.Id);
@@ -114,6 +119,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> AddChildren(ChildrenRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var model = new Children

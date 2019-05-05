@@ -110,6 +110,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> EditService(ServiceRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var service = await _servicesService.GetService(request.Id);
@@ -137,6 +142,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> AddService(ServiceRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var model = new Service

@@ -86,6 +86,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> EditCategory(CategoryRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var category = await _categoryService.GetCategory(request.Id);
@@ -112,6 +117,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> AddCategory(CategoryRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
             try
             {
                 var model = new Category

@@ -20,7 +20,6 @@ namespace WebApplication.Models
             this.Bonus_Points = new HashSet<Bonus_Points>();
             this.Payments = new HashSet<Payment>();
             this.Tickets = new HashSet<Ticket>();
-            this.Visits_Log = new HashSet<Visits_Log>();
         }
     
         public int Id { get; set; }
@@ -41,7 +40,5 @@ namespace WebApplication.Models
         public virtual Service Service { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ticket> Tickets { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Visits_Log> Visits_Log { get; set; }
     }
 }
