@@ -105,6 +105,28 @@ namespace WebApplication.Controllers
             return JsonResults.Success(model);
         }
 
+        // GET: api/Services/5
+        [ActionName("GetServiceNoExistToDiscountCardByUserId")]
+        [HttpGet]
+        public async Task<object> GetServiceNoExistToDiscountCardByUserId(int id)
+        {
+            var services = await _servicesService.GetServiceNoExistToDiscountCardByUserId(id);
+
+            if (services == null)
+            {
+                return JsonResults.Error();
+            }
+
+            List<ServicesViewModel> models = new List<ServicesViewModel>();
+
+            foreach (var service in services)
+            {
+                models.Add(GetServiceModel(service));
+            }
+
+            return JsonResults.Success(models);
+        }
+
         // PUT: api/Services/5
         [ActionName("EditService")]
         [HttpPost]
@@ -121,7 +143,7 @@ namespace WebApplication.Controllers
 
                 if (service == null)
                 {
-                    JsonResults.Error(404, "It`s service not found");
+                    return JsonResults.Error(404, "It`s service not found");
                 }
 
                 service.Name = request.Name;

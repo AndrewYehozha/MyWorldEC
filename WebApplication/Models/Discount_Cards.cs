@@ -14,6 +14,7 @@ namespace WebApplication.Models
     
     public partial class Discount_Cards
     {
+        public int Id { get; set; }
         public decimal NumberCard { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<int> ServiceId { get; set; }

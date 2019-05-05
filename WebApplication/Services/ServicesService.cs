@@ -42,6 +42,15 @@ namespace WebApplication.Services
             return categories;
         }
 
+        public async Task<IEnumerable<Service>> GetServiceNoExistToDiscountCardByUserId(int userId)
+        {
+            var discountCardsIds = await db.Discount_Cards.Where(m => m.UserId == userId).Select(m => m.ServiceId).ToListAsync();
+
+            var service = db.Services.Where(m => !(discountCardsIds.Contains(m.Id))).AsEnumerable();
+
+            return service;
+        }
+
         public async Task UpdateService(Service service)
         {
             db.Entry(service).State = EntityState.Modified;
