@@ -108,6 +108,9 @@ namespace WebApplication.Controllers
                 Name = service.Name,
                 Description = service.Description,
                 Categories = categories,
+                Cost = service.Cost,
+                Floor = service.Floor,
+                Hall = service.Hall,
                 Rating = ratingAvg
             };
 
@@ -157,6 +160,9 @@ namespace WebApplication.Controllers
 
                 service.Name = request.Name;
                 service.Description = request.Description;
+                service.Cost = request.Cost;
+                service.Floor = request.Floor;
+                service.Hall = request.Hall;
 
                 await _servicesService.UpdateService(service);
 
@@ -183,7 +189,10 @@ namespace WebApplication.Controllers
                 var model = new Service
                 {
                     Name = request.Name,
-                    Description = request.Description
+                    Description = request.Description,
+                    Cost = request.Cost,
+                    Floor = request.Floor,
+                    Hall = request.Hall
                 };
 
                 await _servicesService.AddService(model);
@@ -244,7 +253,10 @@ namespace WebApplication.Controllers
             {
                 Id = service.Id,
                 Name = service.Name,
-                Description = service.Description
+                Description = service.Description,
+                Cost = service.Cost,
+                Floor = service.Floor,
+                Hall = service.Hall
             };
 
             return model;

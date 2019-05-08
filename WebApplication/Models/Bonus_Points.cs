@@ -16,11 +16,11 @@ namespace WebApplication.Models
     {
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<int> SeanceId { get; set; }
+        public Nullable<int> ServiceId { get; set; }
         public Nullable<System.DateTime> DateOfUse { get; set; }
         public Nullable<decimal> Amount { get; set; }
     
-        public virtual Session Session { get; set; }
+        public virtual Service Service { get; set; }
         public virtual User User { get; set; }
     }
 }

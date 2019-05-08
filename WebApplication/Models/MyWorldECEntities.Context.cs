@@ -38,7 +38,6 @@ namespace WebApplication.Models
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<Services_Entertainment_Centers> Services_Entertainment_Centers { get; set; }
-        public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<User> Users { get; set; }
