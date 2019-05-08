@@ -10,110 +10,177 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebApplication.Models;
+using WebApplication.Models.Request;
+using WebApplication.Models.Response;
+using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
     public class PreferencesController : ApiController
     {
-        private MyWorldECEntities2 db = new MyWorldECEntities2();
+        private PreferenceService _preferenceService = new PreferenceService();
 
         // GET: api/Preferences
-        public IQueryable<Preference> GetPreferences()
+        [ActionName("GetPreferences")]
+        [HttpGet]
+        public async Task<object> GetPreferences()
         {
-            return db.Preferences;
+            var preferences = await _preferenceService.GetPreferences();
+
+            if (preferences == null)
+            {
+                return JsonResults.Error(errorNum: 404, errorMessage: "Preferences not found");
+            }
+
+            List<PreferenceViewModel> models = new List<PreferenceViewModel>();
+
+            foreach (var preference in preferences)
+            {
+                models.Add(GetPreferenceModel(preference));
+            }
+
+            return JsonResults.Success(models);
         }
 
         // GET: api/Preferences/5
-        [ResponseType(typeof(Preference))]
-        public async Task<IHttpActionResult> GetPreference(int id)
+        [ActionName("GetPreference")]
+        [HttpGet]
+        public async Task<object> GetPreference(int id)
         {
-            Preference preference = await db.Preferences.FindAsync(id);
+            var preference = await _preferenceService.GetPreference(id);
+
             if (preference == null)
             {
-                return NotFound();
+                return JsonResults.Error(errorNum: 404, errorMessage: "It`s preference not found");
             }
 
-            return Ok(preference);
+            var model = GetPreferenceModel(preference);
+            return JsonResults.Success(model);
+        }
+
+        // GET: api/Preferences/5
+        [ActionName("GetPreferenceByUserId")]
+        [HttpGet]
+        public async Task<object> GetPreferenceByUserId(int id)
+        {
+            var preferences = await _preferenceService.GetPreferenceByUserId(id);
+
+            if (preferences == null)
+            {
+                return JsonResults.Error(errorNum: 404, errorMessage: "Preferences not found");
+            }
+
+            List<PreferenceViewModel> models = new List<PreferenceViewModel>();
+
+            foreach (var preference in preferences)
+            {
+                models.Add(GetPreferenceModel(preference));
+            }
+
+            return JsonResults.Success(models);
+        }
+
+        // GET: api/Services/5
+        [ActionName("GetServiceNoExistToPreferenceByUserId")]
+        [HttpGet]
+        public async Task<object> GetServiceNoExistToPreferenceByUserId(int id)
+        {
+            var services = await _preferenceService.GetServiceNoExistToPreferenceByUserId(id);
+
+            if (services == null)
+            {
+                return JsonResults.Error();
+            }
+
+            List<PreferenceViewModel> models = new List<PreferenceViewModel>();
+
+            foreach (var service in services)
+            {
+                models.Add(
+                    new PreferenceViewModel
+                    {
+                        ServiceId = service.Id,
+                        ServiceName = service.Name
+                    }
+                );
+            }
+
+            return JsonResults.Success(models);
         }
 
         // PUT: api/Preferences/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutPreference(int id, Preference preference)
+        [ActionName("AddEditPreference")]
+        [HttpPost]
+        public async Task<object> AddEditPreference(PreferenceRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
             }
-
-            if (id != preference.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(preference).State = EntityState.Modified;
 
             try
             {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PreferenceExists(id))
+                var checkPreference = await _preferenceService.CheckPreference(request);
+
+                if (!checkPreference)
                 {
-                    return NotFound();
+                    var model = new Preference
+                    {
+                        UserId = request.UserId,
+                        ServiceId = request.ServiceId,
+                        Checked = true
+                    };
+
+                    await _preferenceService.AddPreference(model);
+
+                    return JsonResults.Success(GetPreferenceModel(model));
                 }
-                else
-                {
-                    throw;
-                }
+
+                var preference = await _preferenceService.GetPreference(request.Id);
+
+                preference.ServiceId = request.ServiceId;
+                preference.Checked = true;
+
+                await _preferenceService.UpdatePreference(preference);
+
+                return JsonResults.Success(GetPreferenceModel(preference));
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Preferences
-        [ResponseType(typeof(Preference))]
-        public async Task<IHttpActionResult> PostPreference(Preference preference)
-        {
-            if (!ModelState.IsValid)
+            catch (Exception ex)
             {
-                return BadRequest(ModelState);
+                return JsonResults.Error(400, ex.Message);
             }
-
-            db.Preferences.Add(preference);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = preference.Id }, preference);
         }
 
         // DELETE: api/Preferences/5
         [ResponseType(typeof(Preference))]
-        public async Task<IHttpActionResult> DeletePreference(int id)
+        [ActionName("DeletePreference")]
+        [HttpDelete]
+        public async Task<object> DeletePreference(int id)
         {
-            Preference preference = await db.Preferences.FindAsync(id);
+            var preference = await _preferenceService.GetPreference(id);
+
             if (preference == null)
             {
-                return NotFound();
+                return JsonResults.Error();
             }
 
-            db.Preferences.Remove(preference);
-            await db.SaveChangesAsync();
+            await _preferenceService.DeletePreference(preference);
 
-            return Ok(preference);
+            return JsonResults.Success();
         }
 
-        protected override void Dispose(bool disposing)
+        // Util
+        private PreferenceViewModel GetPreferenceModel(Preference preference)
         {
-            if (disposing)
+            var model = new PreferenceViewModel
             {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+                Id = preference.Id,
+                UserId = preference.UserId,
+                ServiceId = preference.ServiceId,
+                ServiceName = preference.Service.Name
+            };
 
-        private bool PreferenceExists(int id)
-        {
-            return db.Preferences.Count(e => e.Id == id) > 0;
+            return model;
         }
     }
 }

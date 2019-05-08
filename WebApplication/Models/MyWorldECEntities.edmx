@@ -97,6 +97,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
+          <Property Name="Checked" Type="bit" Nullable="false" />
           <Property Name="ServiceId" Type="int" />
         </EntityType>
         <EntityType Name="Ratings">
@@ -637,6 +638,7 @@
           <Property Name="ServiceId" Type="Int32" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Preferences_Service" FromRole="Preferences" ToRole="Services" />
           <NavigationProperty Name="User" Relationship="Self.FK_Preferences_User" FromRole="Preferences" ToRole="Users" />
+          <Property Name="Checked" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -1191,6 +1193,7 @@
           <EntitySetMapping Name="Preferences">
             <EntityTypeMapping TypeName="MyWorldECModel.Preference">
               <MappingFragment StoreEntitySet="Preferences">
+                <ScalarProperty Name="Checked" ColumnName="Checked" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
