@@ -227,7 +227,7 @@ namespace WebApplication.Controllers
                 DateRegistered = user.DateRegistered,
                 IsBlocked = user.IsBlocked,
                 IsAdministration = user.IsAdministration,
-                BonusScore = user.BonusScore
+                BonusScore = user.BonusScore,
             };
 
             return model;
