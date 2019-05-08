@@ -10,110 +10,109 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebApplication.Models;
+using WebApplication.Models.Request;
+using WebApplication.Models.Response;
+using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
     public class RatingsController : ApiController
     {
-        private MyWorldECEntities2 db = new MyWorldECEntities2();
+        RatingService _ratingService = new RatingService();
 
         // GET: api/Ratings
-        public IQueryable<Rating> GetRatings()
+        [ActionName("GetRatings")]
+        [HttpGet]
+        public async Task<object> GetRatings()
         {
-            return db.Ratings;
+            var ratings = await _ratingService.GetRatings();
+
+            if(ratings == null)
+            {
+                return JsonResults.Error(errorNum: 404, errorMessage: "Ratings not found");
+            }
+
+            List<RatingViewModel> models = new List<RatingViewModel>();
+
+            foreach (var rating in ratings)
+            {
+                models.Add(GetRatingModel(rating));
+            }
+
+            return JsonResults.Success(models);
         }
 
         // GET: api/Ratings/5
-        [ResponseType(typeof(Rating))]
-        public async Task<IHttpActionResult> GetRating(int id)
+        [ActionName("GetRating")]
+        [HttpGet]
+        public async Task<object> GetRating(int id)
         {
-            Rating rating = await db.Ratings.FindAsync(id);
+            var rating = await _ratingService.GetRating(id);
+
             if (rating == null)
             {
-                return NotFound();
+                return JsonResults.Error(errorNum: 404, errorMessage: "Rating not found");
             }
 
-            return Ok(rating);
+            var model = GetRatingModel(rating);
+
+            return JsonResults.Success(model);
         }
 
         // PUT: api/Ratings/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutRating(int id, Rating rating)
+        [ActionName("AddEditRating")]
+        [HttpPost]
+        public async Task<object> AddEditRating(RatingRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
             }
-
-            if (id != rating.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(rating).State = EntityState.Modified;
 
             try
             {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RatingExists(id))
+                var checkRating = await _ratingService.CheckRating(request);
+
+                if (!checkRating)
                 {
-                    return NotFound();
+                    var model = new Rating
+                    {
+                        UserId = request.UserId,
+                        ServiceId = request.ServiceId,
+                        Rating1 = request.Rating1
+                    };
+
+                    await _ratingService.AddRating(model);
+
+                    return JsonResults.Success(model);
                 }
-                else
-                {
-                    throw;
-                }
+
+                var rating = await _ratingService.GetRating(request.Id);
+
+                rating.Rating1 = request.Rating1;
+
+                await _ratingService.UpdateRating(rating);
+
+                return JsonResults.Success(rating);
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Ratings
-        [ResponseType(typeof(Rating))]
-        public async Task<IHttpActionResult> PostRating(Rating rating)
-        {
-            if (!ModelState.IsValid)
+            catch (Exception ex)
             {
-                return BadRequest(ModelState);
+                return JsonResults.Error(400, ex.Message);
             }
-
-            db.Ratings.Add(rating);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = rating.Id }, rating);
         }
 
-        // DELETE: api/Ratings/5
-        [ResponseType(typeof(Rating))]
-        public async Task<IHttpActionResult> DeleteRating(int id)
+        // Util
+        private RatingViewModel GetRatingModel(Rating rating)
         {
-            Rating rating = await db.Ratings.FindAsync(id);
-            if (rating == null)
+            var model = new RatingViewModel
             {
-                return NotFound();
-            }
+                Id = rating.Id,
+                ServiceId = rating.ServiceId,
+                UserId = rating.UserId,
+                Rating1 = rating.Rating1
+            };
 
-            db.Ratings.Remove(rating);
-            await db.SaveChangesAsync();
-
-            return Ok(rating);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool RatingExists(int id)
-        {
-            return db.Ratings.Count(e => e.Id == id) > 0;
+            return model;
         }
     }
 }
