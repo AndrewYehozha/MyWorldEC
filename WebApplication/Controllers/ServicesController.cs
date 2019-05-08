@@ -18,7 +18,8 @@ namespace WebApplication.Controllers
 {
     public class ServicesController : ApiController
     {
-        ServicesService _servicesService = new ServicesService();
+        private ServicesService _servicesService = new ServicesService();
+        private RatingService _ratingService = new RatingService();
 
         // GET: api/Services
         [ActionName("GetServices")]
@@ -84,14 +85,21 @@ namespace WebApplication.Controllers
         // GET: api/Services/5
         [ActionName("ServiceView")]
         [HttpGet]
-        public async Task<object> ServiceView(int idService)
+        public async Task<object> ServiceView(int id)
         {
-            var service = await _servicesService.GetService(idService);
-            var categories = await _servicesService.GetCategoryToService(idService);
+            var service = await _servicesService.GetService(id);
+            var categories = await _servicesService.GetCategoryToService(id);
 
             if (service == null)
             {
                 return JsonResults.Error(errorNum: 404, errorMessage: "Service not found");
+            }
+
+            var ratingAvg = await _ratingService.AvgRating(service.Id);
+
+            if(ratingAvg == null)
+            {
+                ratingAvg = 0;
             }
 
             var model = new ServiceCategoryViewModel
@@ -99,7 +107,8 @@ namespace WebApplication.Controllers
                 Id = service.Id,
                 Name = service.Name,
                 Description = service.Description,
-                Categories = categories
+                Categories = categories,
+                Rating = ratingAvg
             };
 
             return JsonResults.Success(model);
