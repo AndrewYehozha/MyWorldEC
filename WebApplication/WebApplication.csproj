@@ -249,9 +249,6 @@
     <Compile Include="Models\Services_Entertainment_Centers.cs">
       <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Session.cs">
-      <DependentUpon>MyWorldECEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>MyWorldECEntities.tt</DependentUpon>
     </Compile>

@@ -11,7 +11,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
-          <Property Name="SeanceId" Type="int" />
+          <Property Name="ServiceId" Type="int" />
           <Property Name="DateOfUse" Type="date" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
@@ -86,7 +86,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Entert_CenterId" Type="int" />
-          <Property Name="SeansId" Type="int" />
+          <Property Name="ServiceId" Type="int" />
           <Property Name="UserId" Type="int" />
           <Property Name="Cost" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PaymentDate" Type="datetime" />
@@ -116,6 +116,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Cost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Floor" Type="int" />
+          <Property Name="Hall" Type="int" />
         </EntityType>
         <EntityType Name="Services_Entertainment_Centers">
           <Key>
@@ -125,31 +128,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Entertainment_CenterId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Sessions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ServiceId" Type="int" />
-          <Property Name="DateTimeStart" Type="datetime" />
-          <Property Name="DateTimeEnd" Type="datetime" />
-          <Property Name="Name" Type="nvarchar" MaxLength="20" />
-          <Property Name="Cost" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Description" Type="nvarchar" MaxLength="500" />
-          <Property Name="Floor" Type="int" />
-          <Property Name="Hall" Type="int" />
-          <Property Name="AgeFrom" Type="int" />
-        </EntityType>
         <EntityType Name="Tickets">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SeansId" Type="int" />
+          <Property Name="ServiceId" Type="int" />
           <Property Name="UserId" Type="int" />
           <Property Name="PreOrder_Date" Type="date" />
-          <Property Name="Row" Type="int" />
-          <Property Name="Place" Type="int" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -170,18 +156,6 @@
           <Property Name="BonusScore" Type="int" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK_Bilet_Seans">
-          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
-          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sessions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="SeansId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Bilet_User">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
@@ -194,18 +168,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Bonus_Point_Seans">
-          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
-          <End Role="Bonus_Points" Type="Self.Bonus_Points" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sessions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Bonus_Points">
-              <PropertyRef Name="SeanceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Bonus_Point_User">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Bonus_Points" Type="Self.Bonus_Points" Multiplicity="*" />
@@ -215,6 +177,18 @@
             </Principal>
             <Dependent Role="Bonus_Points">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bonus_Points_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Bonus_Points" Type="Self.Bonus_Points" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bonus_Points">
+              <PropertyRef Name="ServiceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -314,18 +288,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Payment_Seans">
-          <End Role="Sessions" Type="Self.Sessions" Multiplicity="0..1" />
-          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sessions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Payments">
-              <PropertyRef Name="SeansId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Payment_User">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
@@ -335,6 +297,18 @@
             </Principal>
             <Dependent Role="Payments">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payments_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="ServiceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -386,18 +360,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Seans_Service">
-          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
-          <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Services">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Sessions">
-              <PropertyRef Name="ServiceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Service_Entertainment_Center_Entertainment_Center">
           <End Role="Entertainment_Centers" Type="Self.Entertainment_Centers" Multiplicity="1" />
           <End Role="Services_Entertainment_Centers" Type="Self.Services_Entertainment_Centers" Multiplicity="*" />
@@ -422,6 +384,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Tickets_Services">
+          <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Хранилище MyWorldECModelContainer">
           <EntitySet Name="Bonus_Points" EntityType="Self.Bonus_Points" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
@@ -436,23 +410,18 @@
           <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Services_Entertainment_Centers" EntityType="Self.Services_Entertainment_Centers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Bilet_Seans" Association="Self.FK_Bilet_Seans">
-            <End Role="Sessions" EntitySet="Sessions" />
-            <End Role="Tickets" EntitySet="Tickets" />
-          </AssociationSet>
           <AssociationSet Name="FK_Bilet_User" Association="Self.FK_Bilet_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Bonus_Point_Seans" Association="Self.FK_Bonus_Point_Seans">
-            <End Role="Sessions" EntitySet="Sessions" />
-            <End Role="Bonus_Points" EntitySet="Bonus_Points" />
-          </AssociationSet>
           <AssociationSet Name="FK_Bonus_Point_User" Association="Self.FK_Bonus_Point_User">
             <End Role="Users" EntitySet="Users" />
+            <End Role="Bonus_Points" EntitySet="Bonus_Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bonus_Points_Services" Association="Self.FK_Bonus_Points_Services">
+            <End Role="Services" EntitySet="Services" />
             <End Role="Bonus_Points" EntitySet="Bonus_Points" />
           </AssociationSet>
           <AssociationSet Name="FK_Categories_Services_Categories" Association="Self.FK_Categories_Services_Categories">
@@ -487,12 +456,12 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Messages" EntitySet="Messages" />
           </AssociationSet>
-          <AssociationSet Name="FK_Payment_Seans" Association="Self.FK_Payment_Seans">
-            <End Role="Sessions" EntitySet="Sessions" />
-            <End Role="Payments" EntitySet="Payments" />
-          </AssociationSet>
           <AssociationSet Name="FK_Payment_User" Association="Self.FK_Payment_User">
             <End Role="Users" EntitySet="Users" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payments_Services" Association="Self.FK_Payments_Services">
+            <End Role="Services" EntitySet="Services" />
             <End Role="Payments" EntitySet="Payments" />
           </AssociationSet>
           <AssociationSet Name="FK_Preferences_Service" Association="Self.FK_Preferences_Service">
@@ -511,10 +480,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Ratings" EntitySet="Ratings" />
           </AssociationSet>
-          <AssociationSet Name="FK_Seans_Service" Association="Self.FK_Seans_Service">
-            <End Role="Services" EntitySet="Services" />
-            <End Role="Sessions" EntitySet="Sessions" />
-          </AssociationSet>
           <AssociationSet Name="FK_Service_Entertainment_Center_Entertainment_Center" Association="Self.FK_Service_Entertainment_Center_Entertainment_Center">
             <End Role="Entertainment_Centers" EntitySet="Entertainment_Centers" />
             <End Role="Services_Entertainment_Centers" EntitySet="Services_Entertainment_Centers" />
@@ -522,6 +487,10 @@
           <AssociationSet Name="FK_Service_Entertainment_Center_Service" Association="Self.FK_Service_Entertainment_Center_Service">
             <End Role="Services" EntitySet="Services" />
             <End Role="Services_Entertainment_Centers" EntitySet="Services_Entertainment_Centers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Services" Association="Self.FK_Tickets_Services">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -534,11 +503,11 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
-          <Property Name="SeanceId" Type="Int32" />
           <Property Name="DateOfUse" Type="DateTime" Precision="0" />
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="0" />
-          <NavigationProperty Name="Session" Relationship="Self.FK_Bonus_Point_Seans" FromRole="Bonus_Points" ToRole="Sessions" />
           <NavigationProperty Name="User" Relationship="Self.FK_Bonus_Point_User" FromRole="Bonus_Points" ToRole="Users" />
+          <Property Name="ServiceId" Type="Int32" />
+          <NavigationProperty Name="Service" Relationship="MyWorldECModel.FK_Bonus_Points_Services" FromRole="Bonus_Points" ToRole="Service" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -622,12 +591,12 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Entert_CenterId" Type="Int32" />
-          <Property Name="SeansId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="Cost" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PaymentDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Session" Relationship="Self.FK_Payment_Seans" FromRole="Payments" ToRole="Sessions" />
           <NavigationProperty Name="User" Relationship="Self.FK_Payment_User" FromRole="Payments" ToRole="Users" />
+          <Property Name="ServiceId" Type="Int32" />
+          <NavigationProperty Name="Service" Relationship="MyWorldECModel.FK_Payments_Services" FromRole="Payment" ToRole="Service" />
         </EntityType>
         <EntityType Name="Preference">
           <Key>
@@ -662,8 +631,13 @@
           <NavigationProperty Name="Discount_Cards" Relationship="Self.FK_Discount_Card_Service" FromRole="Services" ToRole="Discount_Cards" />
           <NavigationProperty Name="Preferences" Relationship="Self.FK_Preferences_Service" FromRole="Services" ToRole="Preferences" />
           <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_Service" FromRole="Services" ToRole="Ratings" />
-          <NavigationProperty Name="Sessions" Relationship="Self.FK_Seans_Service" FromRole="Services" ToRole="Sessions" />
           <NavigationProperty Name="Services_Entertainment_Centers" Relationship="Self.FK_Service_Entertainment_Center_Service" FromRole="Services" ToRole="Services_Entertainment_Centers" />
+          <Property Name="Cost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Floor" Type="Int32" />
+          <Property Name="Hall" Type="Int32" />
+          <NavigationProperty Name="Bonus_Points" Relationship="MyWorldECModel.FK_Bonus_Points_Services" FromRole="Service" ToRole="Bonus_Points" />
+          <NavigationProperty Name="Payments" Relationship="MyWorldECModel.FK_Payments_Services" FromRole="Service" ToRole="Payment" />
+          <NavigationProperty Name="Tickets" Relationship="MyWorldECModel.FK_Tickets_Services" FromRole="Service" ToRole="Ticket" />
         </EntityType>
         <EntityType Name="Services_Entertainment_Centers">
           <Key>
@@ -675,37 +649,16 @@
           <NavigationProperty Name="Entertainment_Centers" Relationship="Self.FK_Service_Entertainment_Center_Entertainment_Center" FromRole="Services_Entertainment_Centers" ToRole="Entertainment_Centers" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Service_Entertainment_Center_Service" FromRole="Services_Entertainment_Centers" ToRole="Services" />
         </EntityType>
-        <EntityType Name="Session">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ServiceId" Type="Int32" />
-          <Property Name="DateTimeStart" Type="DateTime" Precision="3" />
-          <Property Name="DateTimeEnd" Type="DateTime" Precision="3" />
-          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Cost" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Floor" Type="Int32" />
-          <Property Name="Hall" Type="Int32" />
-          <Property Name="AgeFrom" Type="Int32" />
-          <NavigationProperty Name="Bonus_Points" Relationship="Self.FK_Bonus_Point_Seans" FromRole="Sessions" ToRole="Bonus_Points" />
-          <NavigationProperty Name="Payments" Relationship="Self.FK_Payment_Seans" FromRole="Sessions" ToRole="Payments" />
-          <NavigationProperty Name="Service" Relationship="Self.FK_Seans_Service" FromRole="Sessions" ToRole="Services" />
-          <NavigationProperty Name="Tickets" Relationship="Self.FK_Bilet_Seans" FromRole="Sessions" ToRole="Tickets" />
-        </EntityType>
         <EntityType Name="Ticket">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SeansId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="PreOrder_Date" Type="DateTime" Precision="0" />
-          <Property Name="Row" Type="Int32" />
-          <Property Name="Place" Type="Int32" />
-          <NavigationProperty Name="Session" Relationship="Self.FK_Bilet_Seans" FromRole="Tickets" ToRole="Sessions" />
           <NavigationProperty Name="User" Relationship="Self.FK_Bilet_User" FromRole="Tickets" ToRole="Users" />
+          <Property Name="ServiceId" Type="Int32" />
+          <NavigationProperty Name="Service" Relationship="MyWorldECModel.FK_Tickets_Services" FromRole="Ticket" ToRole="Service" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -735,18 +688,6 @@
           <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_User" FromRole="Users" ToRole="Ratings" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK_Bilet_User" FromRole="Users" ToRole="Tickets" />
         </EntityType>
-        <Association Name="FK_Bonus_Point_Seans">
-          <End Role="Sessions" Type="Self.Session" Multiplicity="0..1" />
-          <End Role="Bonus_Points" Type="Self.Bonus_Points" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sessions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Bonus_Points">
-              <PropertyRef Name="SeanceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Bonus_Point_User">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Bonus_Points" Type="Self.Bonus_Points" Multiplicity="*" />
@@ -867,18 +808,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Payment_Seans">
-          <End Role="Sessions" Type="Self.Session" Multiplicity="0..1" />
-          <End Role="Payments" Type="Self.Payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sessions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Payments">
-              <PropertyRef Name="SeansId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Payment_User">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Payments" Type="Self.Payment" Multiplicity="*" />
@@ -939,18 +868,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Seans_Service">
-          <End Role="Services" Type="Self.Service" Multiplicity="0..1" />
-          <End Role="Sessions" Type="Self.Session" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Services">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Sessions">
-              <PropertyRef Name="ServiceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Service_Entertainment_Center_Service">
           <End Role="Services" Type="Self.Service" Multiplicity="1" />
           <End Role="Services_Entertainment_Centers" Type="Self.Services_Entertainment_Centers" Multiplicity="*" />
@@ -960,18 +877,6 @@
             </Principal>
             <Dependent Role="Services_Entertainment_Centers">
               <PropertyRef Name="ServiceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Bilet_Seans">
-          <End Role="Sessions" Type="Self.Session" Multiplicity="0..1" />
-          <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sessions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="SeansId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1001,13 +906,8 @@
           <EntitySet Name="Ratings" EntityType="Self.Rating" />
           <EntitySet Name="Services" EntityType="Self.Service" />
           <EntitySet Name="Services_Entertainment_Centers" EntityType="Self.Services_Entertainment_Centers" />
-          <EntitySet Name="Sessions" EntityType="Self.Session" />
           <EntitySet Name="Tickets" EntityType="Self.Ticket" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_Bonus_Point_Seans" Association="Self.FK_Bonus_Point_Seans">
-            <End Role="Sessions" EntitySet="Sessions" />
-            <End Role="Bonus_Points" EntitySet="Bonus_Points" />
-          </AssociationSet>
           <AssociationSet Name="FK_Bonus_Point_User" Association="Self.FK_Bonus_Point_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Bonus_Points" EntitySet="Bonus_Points" />
@@ -1048,10 +948,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Messages" EntitySet="Messages" />
           </AssociationSet>
-          <AssociationSet Name="FK_Payment_Seans" Association="Self.FK_Payment_Seans">
-            <End Role="Sessions" EntitySet="Sessions" />
-            <End Role="Payments" EntitySet="Payments" />
-          </AssociationSet>
           <AssociationSet Name="FK_Payment_User" Association="Self.FK_Payment_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Payments" EntitySet="Payments" />
@@ -1072,23 +968,63 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Ratings" EntitySet="Ratings" />
           </AssociationSet>
-          <AssociationSet Name="FK_Seans_Service" Association="Self.FK_Seans_Service">
-            <End Role="Services" EntitySet="Services" />
-            <End Role="Sessions" EntitySet="Sessions" />
-          </AssociationSet>
           <AssociationSet Name="FK_Service_Entertainment_Center_Service" Association="Self.FK_Service_Entertainment_Center_Service">
             <End Role="Services" EntitySet="Services" />
             <End Role="Services_Entertainment_Centers" EntitySet="Services_Entertainment_Centers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Bilet_Seans" Association="Self.FK_Bilet_Seans">
-            <End Role="Sessions" EntitySet="Sessions" />
-            <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
           <AssociationSet Name="FK_Bilet_User" Association="Self.FK_Bilet_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
+          <AssociationSet Name="FK_Bonus_Points_Services" Association="MyWorldECModel.FK_Bonus_Points_Services">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Bonus_Points" EntitySet="Bonus_Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payments_Services" Association="MyWorldECModel.FK_Payments_Services">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Services" Association="MyWorldECModel.FK_Tickets_Services">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Bonus_Points_Services">
+          <End Type="MyWorldECModel.Service" Role="Service" Multiplicity="0..1" />
+          <End Type="MyWorldECModel.Bonus_Points" Role="Bonus_Points" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bonus_Points">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payments_Services">
+          <End Type="MyWorldECModel.Service" Role="Service" Multiplicity="0..1" />
+          <End Type="MyWorldECModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tickets_Services">
+          <End Type="MyWorldECModel.Service" Role="Service" Multiplicity="0..1" />
+          <End Type="MyWorldECModel.Ticket" Role="Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1098,9 +1034,9 @@
           <EntitySetMapping Name="Bonus_Points">
             <EntityTypeMapping TypeName="MyWorldECModel.Bonus_Points">
               <MappingFragment StoreEntitySet="Bonus_Points">
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="SeanceId" ColumnName="SeanceId" />
                 <ScalarProperty Name="DateOfUse" ColumnName="DateOfUse" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
               </MappingFragment>
@@ -1181,9 +1117,9 @@
           <EntitySetMapping Name="Payments">
             <EntityTypeMapping TypeName="MyWorldECModel.Payment">
               <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Entert_CenterId" ColumnName="Entert_CenterId" />
-                <ScalarProperty Name="SeansId" ColumnName="SeansId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Cost" ColumnName="Cost" />
                 <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
@@ -1213,6 +1149,9 @@
           <EntitySetMapping Name="Services">
             <EntityTypeMapping TypeName="MyWorldECModel.Service">
               <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="Hall" ColumnName="Hall" />
+                <ScalarProperty Name="Floor" ColumnName="Floor" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -1228,32 +1167,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Sessions">
-            <EntityTypeMapping TypeName="MyWorldECModel.Session">
-              <MappingFragment StoreEntitySet="Sessions">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="DateTimeStart" ColumnName="DateTimeStart" />
-                <ScalarProperty Name="DateTimeEnd" ColumnName="DateTimeEnd" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Cost" ColumnName="Cost" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Floor" ColumnName="Floor" />
-                <ScalarProperty Name="Hall" ColumnName="Hall" />
-                <ScalarProperty Name="AgeFrom" ColumnName="AgeFrom" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tickets">
             <EntityTypeMapping TypeName="MyWorldECModel.Ticket">
               <MappingFragment StoreEntitySet="Tickets">
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="SeansId" ColumnName="SeansId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="PreOrder_Date" ColumnName="PreOrder_Date" />
-                <ScalarProperty Name="Row" ColumnName="Row" />
-                <ScalarProperty Name="Place" ColumnName="Place" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">

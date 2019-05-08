@@ -15,13 +15,11 @@ namespace WebApplication.Models
     public partial class Ticket
     {
         public int Id { get; set; }
-        public Nullable<int> SeansId { get; set; }
+        public Nullable<int> ServiceId { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<System.DateTime> PreOrder_Date { get; set; }
-        public Nullable<int> Row { get; set; }
-        public Nullable<int> Place { get; set; }
     
-        public virtual Session Session { get; set; }
+        public virtual Service Service { get; set; }
         public virtual User User { get; set; }
     }
 }

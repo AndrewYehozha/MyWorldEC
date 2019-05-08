@@ -21,14 +21,16 @@ namespace WebApplication.Models
             this.Discount_Cards = new HashSet<Discount_Cards>();
             this.Preferences = new HashSet<Preference>();
             this.Ratings = new HashSet<Rating>();
-            this.Sessions = new HashSet<Session>();
             this.Services_Entertainment_Centers = new HashSet<Services_Entertainment_Centers>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-    
+        public Nullable<decimal> Cost { get; set; }
+        public Nullable<int> Floor { get; set; }
+        public Nullable<int> Hall { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Categories_Services> Categories_Services { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -37,8 +39,6 @@ namespace WebApplication.Models
         public virtual ICollection<Preference> Preferences { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Rating> Ratings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Session> Sessions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Services_Entertainment_Centers> Services_Entertainment_Centers { get; set; }
     }

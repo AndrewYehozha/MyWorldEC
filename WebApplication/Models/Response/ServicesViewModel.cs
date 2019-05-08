@@ -15,5 +15,10 @@ namespace WebApplication.Models.Response
 
         [Required(ErrorMessage = "The Description is required")]
         public string Description { get; set; }
+
+        [Required(ErrorMessage = "The Cost is required")]
+        public Nullable<decimal> Cost { get; set; }
+        public Nullable<int> Floor { get; set; }
+        public Nullable<int> Hall { get; set; }
     }
 }
