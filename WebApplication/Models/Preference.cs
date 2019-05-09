@@ -15,10 +15,10 @@ namespace WebApplication.Models
     public partial class Preference
     {
         public int Id { get; set; }
-        public Nullable<int> UserId { get; set; }
-        public Nullable<int> ServiceId { get; set; }
+        public int UserId { get; set; }
         public bool Checked { get; set; }
-
+        public int ServiceId { get; set; }
+    
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }
     }

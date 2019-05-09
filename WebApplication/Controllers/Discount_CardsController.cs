@@ -106,14 +106,9 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> AddDiscount_Card(Discount_CardRequest request)
         {
-            if (request.NumberCard == 0)
+            if (!ModelState.IsValid)
             {
-                return JsonResults.Error(400, "The Number Card is required");
-            }
-
-            if (request.NumberCard < 1000000000000000 || request.NumberCard > 9999999999999999)
-            {
-                return JsonResults.Error(400, "Invalid Card Number. (Card Number must be 16 numbers)");
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
             }
 
             var checkValidateCard = await _discount_CardService.CountDiscount_CardByNumberCard(request.Id, request.NumberCard);

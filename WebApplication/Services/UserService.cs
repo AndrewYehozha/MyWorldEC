@@ -13,7 +13,7 @@ namespace WebApplication.Services
 {
     public class UserService
     {
-        private MyWorldECEntities2 db = new MyWorldECEntities2();
+        private MyWorldECEntities4 db = new MyWorldECEntities4();
 
         public async Task<IEnumerable<User>> GetUsers()
         {

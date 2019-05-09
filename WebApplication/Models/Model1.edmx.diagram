@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="20fb222b14f143f9bdb7775aeb910aa6" Name="Diagram1">
+        <EntityTypeShape EntityType="MyWorldECModel.Bonus_Points" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Category" Width="1.5" PointX="3.75" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Categories_Services" Width="1.5" PointX="6" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Chat" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Children" Width="1.5" PointX="3" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Discount_Cards" Width="1.5" PointX="6" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Entertainment_Centers" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Message" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Payment" Width="1.5" PointX="6" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Preference" Width="1.5" PointX="3" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Rating" Width="1.5" PointX="8" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Service" Width="1.5" PointX="3.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Services_Entertainment_Centers" Width="1.5" PointX="6" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.Ticket" Width="1.5" PointX="6" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyWorldECModel.User" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
+        <AssociationConnector Association="MyWorldECModel.FK_Bonus_Point_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Bonus_Points_Services" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Categories_Services_Categories" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Categories_Services_Services1" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Chat_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Message_Chat" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Children_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Discount_Card_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Discount_Card_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Service_Entertainment_Center_Entertainment_Center" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Messages_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Payment_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Payments_Services" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Preferences_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Preferences_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Rating_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Rating_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Service_Entertainment_Center_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Tickets_Services" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Bilet_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -15,13 +15,13 @@ namespace WebApplication.Models
     public partial class Payment
     {
         public int Id { get; set; }
-        public Nullable<int> Entert_CenterId { get; set; }
+        public int Entert_CenterId { get; set; }
         public Nullable<int> ServiceId { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<decimal> Cost { get; set; }
-        public Nullable<System.DateTime> PaymentDate { get; set; }
+        public decimal Cost { get; set; }
+        public System.DateTime PaymentDate { get; set; }
     
-        public virtual Service Service { get; set; }
         public virtual User User { get; set; }
+        public virtual Service Service { get; set; }
     }
 }

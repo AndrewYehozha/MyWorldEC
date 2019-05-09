@@ -15,10 +15,10 @@ namespace WebApplication.Models
     public partial class Message
     {
         public int Id { get; set; }
-        public Nullable<int> ChatId { get; set; }
+        public int ChatId { get; set; }
         public Nullable<int> AdminId { get; set; }
         public string Text { get; set; }
-        public Nullable<bool> IsRead { get; set; }
+        public bool IsRead { get; set; }
     
         public virtual Chat Chat { get; set; }
         public virtual User User { get; set; }

@@ -37,10 +37,10 @@ namespace WebApplication.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public Nullable<System.DateTime> Birsday { get; set; }
-        public Nullable<System.DateTime> DateRegistered { get; set; }
-        public Nullable<bool> IsBlocked { get; set; }
-        public Nullable<bool> IsAdministration { get; set; }
-        public Nullable<int> BonusScore { get; set; }
+        public System.DateTime DateRegistered { get; set; }
+        public bool IsBlocked { get; set; }
+        public bool IsAdministration { get; set; }
+        public int BonusScore { get; set; }
         public string Password { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

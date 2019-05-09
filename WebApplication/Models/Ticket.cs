@@ -17,7 +17,7 @@ namespace WebApplication.Models
         public int Id { get; set; }
         public Nullable<int> ServiceId { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<System.DateTime> PreOrder_Date { get; set; }
+        public System.DateTime PreOrder_Date { get; set; }
     
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }

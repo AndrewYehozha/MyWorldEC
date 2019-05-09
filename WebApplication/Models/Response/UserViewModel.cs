@@ -26,10 +26,10 @@ namespace WebApplication.Models.Response
         [Required(ErrorMessage = "The Email is required")]
         [EmailAddress(ErrorMessage = "Invalid Email")]
         public string Email { get; set; }
-        public Nullable<System.DateTime> Birsday { get; set; }
-        public Nullable<System.DateTime> DateRegistered { get; set; }
-        public Nullable<bool> IsBlocked { get; set; }
-        public Nullable<bool> IsAdministration { get; set; }
-        public Nullable<int> BonusScore { get; set; }
+        public DateTime? Birsday { get; set; }
+        public DateTime DateRegistered { get; set; }
+        public bool IsBlocked { get; set; }
+        public bool IsAdministration { get; set; }
+        public int BonusScore { get; set; }
     }
 }

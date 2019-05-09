@@ -17,7 +17,7 @@ namespace WebApplication.Models
         public int Id { get; set; }
         public Nullable<int> ServiceId { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<decimal> Rating1 { get; set; }
+        public decimal Rating1 { get; set; }
     
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }

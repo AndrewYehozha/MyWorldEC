@@ -10,9 +10,9 @@ namespace WebApplication.Services
 {
     public class Discount_CardService
     {
-        private MyWorldECEntities2 db = new MyWorldECEntities2();
+        private MyWorldECEntities4 db = new MyWorldECEntities4();
 
-        public async Task<IEnumerable<Discount_Cards>> GetDiscount_Cards()
+        public async Task<List<Discount_Cards>> GetDiscount_Cards()
         {
             var discountCards = await db.Discount_Cards.ToListAsync();
             return discountCards;
@@ -22,6 +22,13 @@ namespace WebApplication.Services
         {
             var discountCard = await db.Discount_Cards.FindAsync(id);
            
+            return discountCard;
+        }
+
+        public async Task<List<Discount_Cards>> GetDiscount_CardsByUserID(int userId)
+        {
+            var discountCard = await db.Discount_Cards.Where(d => d.UserId == userId).ToListAsync();
+
             return discountCard;
         }
 

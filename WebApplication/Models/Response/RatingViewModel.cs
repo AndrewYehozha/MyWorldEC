@@ -13,6 +13,6 @@ namespace WebApplication.Models.Response
         public int? UserId { get; set; }
 
         [Required(ErrorMessage = "The Rating is required")]
-        public decimal? Rating1 { get; set; }
+        public decimal Rating1 { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace WebApplication.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class MyWorldECEntities2 : DbContext
+    public partial class MyWorldECEntities4 : DbContext
     {
-        public MyWorldECEntities2()
-            : base("name=MyWorldECEntities2")
+        public MyWorldECEntities4()
+            : base("name=MyWorldECEntities4")
         {
         }
     
@@ -38,7 +38,6 @@ namespace WebApplication.Models
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<Services_Entertainment_Centers> Services_Entertainment_Centers { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
