@@ -18,6 +18,6 @@ namespace WebApplication.Models.Response
 
         [Required(ErrorMessage = "The Date of Birthday is required")]
         [DataType(DataType.DateTime, ErrorMessage = "Invalid Date of Birthday")]
-        public Nullable<System.DateTime> DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
     }
 }

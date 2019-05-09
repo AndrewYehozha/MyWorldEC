@@ -23,7 +23,7 @@ namespace WebApplication.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<bool> IsBlocked { get; set; }
+        public bool IsBlocked { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

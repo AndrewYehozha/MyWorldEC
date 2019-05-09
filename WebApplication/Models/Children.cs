@@ -18,7 +18,7 @@ namespace WebApplication.Models
         public Nullable<int> UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Nullable<System.DateTime> DateOfBirth { get; set; }
+        public System.DateTime DateOfBirth { get; set; }
     
         public virtual User User { get; set; }
     }

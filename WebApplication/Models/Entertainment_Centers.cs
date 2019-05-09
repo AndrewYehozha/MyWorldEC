@@ -26,7 +26,7 @@ namespace WebApplication.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public Nullable<bool> IsParking { get; set; }
+        public bool IsParking { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Services_Entertainment_Centers> Services_Entertainment_Centers { get; set; }

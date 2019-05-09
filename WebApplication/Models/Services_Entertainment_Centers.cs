@@ -14,9 +14,9 @@ namespace WebApplication.Models
     
     public partial class Services_Entertainment_Centers
     {
-        public int ServiceId { get; set; }
+        public Nullable<int> ServiceId { get; set; }
         public int Id { get; set; }
-        public int Entertainment_CenterId { get; set; }
+        public Nullable<int> Entertainment_CenterId { get; set; }
     
         public virtual Entertainment_Centers Entertainment_Centers { get; set; }
         public virtual Service Service { get; set; }

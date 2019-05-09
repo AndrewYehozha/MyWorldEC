@@ -129,7 +129,7 @@ namespace WebApplication.Controllers
 
         [ActionName("AddServiceToEntertainment_Center")]
         [HttpPost]
-        public async Task<object> AddServiceToEntertainment_Center(Services_Entertainment_Centers request)
+        public async Task<object> AddServiceToEntertainment_Center(Services_Entertainment_CentersRequest request)
         {
             try
             {
@@ -140,7 +140,13 @@ namespace WebApplication.Controllers
                     return JsonResults.Error(406, "This entertainment center already has this service.");
                 }
 
-                await _entertainmentCenterService.AddServiceInEntertainment_Center(request);
+                var model = new Services_Entertainment_Centers
+                {
+                    Entertainment_CenterId = request.Entertainment_CenterId,
+                    ServiceId = request.ServiceId
+                };
+
+                await _entertainmentCenterService.AddServiceInEntertainment_Center(model);
 
                 return JsonResults.Success();
             }
@@ -178,7 +184,7 @@ namespace WebApplication.Controllers
                 Address = entertainment_Center.Address,
                 Phone = entertainment_Center.Phone,
                 Email = entertainment_Center.Email,
-                IsParking = (bool)entertainment_Center.IsParking
+                IsParking = entertainment_Center.IsParking
             };
 
             return model;

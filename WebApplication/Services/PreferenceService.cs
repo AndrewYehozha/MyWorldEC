@@ -11,7 +11,7 @@ namespace WebApplication.Services
 {
     public class PreferenceService
     {
-        private MyWorldECEntities2 db = new MyWorldECEntities2();
+        private MyWorldECEntities4 db = new MyWorldECEntities4();
 
         public async Task<List<Preference>> GetPreferences()
         {
@@ -36,7 +36,7 @@ namespace WebApplication.Services
 
         public async Task<bool> CheckPreference(PreferenceRequest request)
         {
-            var preferences = db.Preferences.Where(p => p.UserId == request.UserId && p.ServiceId == request.ServiceId);
+            var preferences = await db.Preferences.Where(p => p.UserId == request.UserId && p.ServiceId == request.ServiceId).FirstOrDefaultAsync();
 
             return preferences != null;
         }

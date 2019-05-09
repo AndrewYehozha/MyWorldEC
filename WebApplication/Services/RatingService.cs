@@ -11,7 +11,7 @@ namespace WebApplication.Services
 {
     public class RatingService
     {
-        private MyWorldECEntities2 db = new MyWorldECEntities2();
+        private MyWorldECEntities4 db = new MyWorldECEntities4();
 
         public async Task<IEnumerable<Rating>> GetRatings()
         {
@@ -35,9 +35,16 @@ namespace WebApplication.Services
 
         public async Task<decimal?> AvgRating(int serviceId)
         {
-            var ratingAvg = db.Ratings.Where(x => x.Id == serviceId).Select(r => r.Rating1).ToList<decimal?>();
+            var ratingAvg = await db.Ratings.Where(x => x.Id == serviceId).Select(r => r.Rating1).AverageAsync();
 
-            return ratingAvg.Average();
+            return ratingAvg;
+        }
+
+        public async Task<decimal?> GetRatingByuserId(int serviceId, int userId)
+        {
+            var rating = await db.Ratings.Where(x => x.UserId == userId && x.Id == serviceId).Select(r => r.Rating1).FirstOrDefaultAsync();
+
+            return rating;
         }
 
         public async Task UpdateRating(Rating rating)

@@ -85,7 +85,7 @@ namespace WebApplication.Controllers
         // GET: api/Services/5
         [ActionName("ServiceView")]
         [HttpGet]
-        public async Task<object> ServiceView(int id)
+        public async Task<object> ServiceView(int id, int userId)
         {
             var service = await _servicesService.GetService(id);
             var categories = await _servicesService.GetCategoryToService(id);
@@ -96,10 +96,26 @@ namespace WebApplication.Controllers
             }
 
             var ratingAvg = await _ratingService.AvgRating(service.Id);
+            var userRating = await _ratingService.GetRatingByuserId(service.Id, userId);
 
-            if(ratingAvg == null)
+            if (ratingAvg == null)
             {
                 ratingAvg = 0;
+            }
+
+            if (userRating == null)
+            {
+                userRating = 0;
+            }
+
+            var categoriesView = new List<CategoryViewModel>();
+
+            foreach (var item in categories)
+            {
+                categoriesView.Add(new CategoryViewModel {
+                    Id = item.Id,
+                    Name = item.Name
+                });
             }
 
             var model = new ServiceCategoryViewModel
@@ -107,11 +123,12 @@ namespace WebApplication.Controllers
                 Id = service.Id,
                 Name = service.Name,
                 Description = service.Description,
-                Categories = categories,
+                Categories = categoriesView,
                 Cost = service.Cost,
                 Floor = service.Floor,
                 Hall = service.Hall,
-                Rating = ratingAvg
+                Rating = ratingAvg != null ? (decimal)ratingAvg : 0,
+                userRating = userRating
             };
 
             return JsonResults.Success(model);

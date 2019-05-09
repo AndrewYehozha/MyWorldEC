@@ -5,10 +5,10 @@ using System.Web;
 
 namespace WebApplication.Models.Request
 {
-    public class PreferenceRequest
+    public class Services_Entertainment_CentersRequest
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
         public int ServiceId { get; set; }
+        public int Id { get; set; }
+        public int Entertainment_CenterId { get; set; }
     }
 }

@@ -21,6 +21,9 @@ namespace WebApplication.Controllers
     public class UsersController : ApiController
     {
         private UserService _userService = new UserService();
+        private ChildrenService _childrenService = new ChildrenService();
+        private Discount_CardService _discount_Card = new Discount_CardService();
+        private PreferenceService _preferenceService = new PreferenceService();
 
         // GET: api/Users/GetUsers
         [ActionName("GetUsers")]
@@ -61,20 +64,78 @@ namespace WebApplication.Controllers
             return JsonResults.Success(model);
         }
 
-        //[HttpGet]
-        //public async Task<object> ViewUserProfile(int id)
-        //{
-        //    var user = await _userService.GetUser(id);
+        [HttpGet]
+        public async Task<object> ViewUserProfile(int id)
+        {
+            var user = await _userService.GetUser(id);
 
-        //    if (user == null)
-        //    {
-        //        return JsonResults.Error(errorNum: 404, errorMessage: "User not found");
-        //    }
+            if (user == null)
+            {
+                return JsonResults.Error(errorNum: 404, errorMessage: "User not found");
+            }
 
-        //    var model = GetUserModel(user);
+            var childrens = await _childrenService.GetChildrensByUserId(user.Id);
+            var modelChildrens = new List<ChildrenViewModel>();
 
-        //    return JsonResults.Success(model);
-        //}
+            foreach (var children in childrens)
+            {
+                modelChildrens.Add(new ChildrenViewModel {
+                    Id = children.Id,
+                    FirstName = children.FirstName,
+                    LastName = children.LastName,
+                    DateOfBirth = (DateTime)children.DateOfBirth
+                });
+            }
+
+            var discountCards = await _discount_Card.GetDiscount_CardsByUserID(user.Id);
+            var modelDiscountCards = new List<Discount_CardViewModel>();
+
+            foreach (var discount_Card in discountCards)
+            {
+                modelDiscountCards.Add(new Discount_CardViewModel
+                {
+                    Id = discount_Card.Id,
+                    ServiceId = discount_Card.ServiceId,
+                    NumberCard = discount_Card.NumberCard,
+                    ServiceName = discount_Card.Service.Name
+                });
+            }
+
+            var preferences = await _preferenceService.GetPreferenceByUserId(user.Id);
+            var modelPreferences = new List<PreferenceViewModel>();
+
+            foreach (var preference in preferences)
+            {
+                modelPreferences.Add(new PreferenceViewModel {
+                    Id = preference.Id,
+                    UserId = (int)preference.UserId,
+                    ServiceId = (int)preference.ServiceId,
+                    ServiceName = preference.Service.Name
+                });
+            }
+
+            var model = new UserViewProfile
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Country = user.Country,
+                City = user.City,
+                Address = user.Address,
+                Phone = user.Phone,
+                Email = user.Email,
+                Birsday = user.Birsday,
+                DateRegistered = user.DateRegistered,
+                IsBlocked = user.IsBlocked,
+                IsAdministration = user.IsAdministration,
+                BonusScore = user.BonusScore,
+                Childrens = modelChildrens,
+                DiscountCards = modelDiscountCards,
+                Preferences = modelPreferences
+            };
+
+            return JsonResults.Success(model);
+        }
 
         // PUT: api/Users/EditUser
         [ActionName("EditUser")]
@@ -227,7 +288,7 @@ namespace WebApplication.Controllers
                 DateRegistered = user.DateRegistered,
                 IsBlocked = user.IsBlocked,
                 IsAdministration = user.IsAdministration,
-                BonusScore = user.BonusScore,
+                BonusScore = user.BonusScore
             };
 
             return model;

@@ -10,7 +10,7 @@ namespace WebApplication.Services
 {
     public class CategoryService
     {
-        private MyWorldECEntities2 db = new MyWorldECEntities2();
+        private MyWorldECEntities4 db = new MyWorldECEntities4();
 
         public async Task<IEnumerable<Category>> GetCategories()
         {

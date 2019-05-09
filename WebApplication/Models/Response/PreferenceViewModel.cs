@@ -8,8 +8,8 @@ namespace WebApplication.Models.Response
     public class PreferenceViewModel
     {
         public int Id { get; set; }
-        public Nullable<int> UserId { get; set; }
-        public Nullable<int> ServiceId { get; set; }
+        public int UserId { get; set; }
+        public int ServiceId { get; set; }
         public string ServiceName { get; set; }
     }
 }
