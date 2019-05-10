@@ -16,6 +16,7 @@ using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class Discount_CardsController : ApiController
     {
         private Discount_CardService _discount_CardService = new Discount_CardService();

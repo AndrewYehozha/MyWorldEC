@@ -16,6 +16,7 @@ using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class ServicesController : ApiController
     {
         private ServicesService _servicesService = new ServicesService();

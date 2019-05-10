@@ -15,6 +15,7 @@ using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class Bonus_PointController : ApiController
     {
         Bonus_PointService _bonus_PointService = new Bonus_PointService();

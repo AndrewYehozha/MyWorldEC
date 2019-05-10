@@ -16,6 +16,7 @@ using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class RatingsController : ApiController
     {
         RatingService _ratingService = new RatingService();

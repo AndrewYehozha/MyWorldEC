@@ -16,6 +16,7 @@ using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class CategoriesController : ApiController
     {
         CategoryService _categoryService = new CategoryService();
