@@ -16,6 +16,7 @@ using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class PreferencesController : ApiController
     {
         private PreferenceService _preferenceService = new PreferenceService();

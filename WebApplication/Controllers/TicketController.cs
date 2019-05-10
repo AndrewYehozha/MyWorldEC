@@ -12,9 +12,10 @@ using System.Web.Http.Description;
 using WebApplication.Models;
 using WebApplication.Models.Response;
 using WebApplication.Services;
-
+using System.IdentityModel.Tokens.Jwt;
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class TicketController : ApiController
     {
         private TicketService _ticketService = new TicketService();

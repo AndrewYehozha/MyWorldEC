@@ -16,6 +16,7 @@ using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class Entertainment_CentersController : ApiController
     {
         private EntertainmentCenterService _entertainmentCenterService = new EntertainmentCenterService();

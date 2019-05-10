@@ -18,6 +18,8 @@ using WebApplication.Models.Request;
 
 namespace WebApplication.Controllers
 {
+
+    [Authorize]
     public class UsersController : ApiController
     {
         private UserService _userService = new UserService();
@@ -64,6 +66,7 @@ namespace WebApplication.Controllers
             return JsonResults.Success(model);
         }
 
+        [ActionName("ViewUserProfile")]
         [HttpGet]
         public async Task<object> ViewUserProfile(int id)
         {
@@ -174,86 +177,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(400, ex.Message);
             }
         }
-
-        // POST: api/Users/Registration
-        [ActionName("Registration")]
-        [HttpPost]
-        public async Task<object> Registration(UserRegistredRequest model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
-            }
-
-            try
-            {
-                var isUserContain = await _userService.CheckUserByEmailAsync(model.Email);
-
-                if (isUserContain)
-                {
-                    return JsonResults.Error(401, "User is already registered");
-                }
-
-                var user = new User
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    Password = _userService.HashPassword(model.Password),
-                    IsAdministration = false,
-                    IsBlocked = false,
-                    DateRegistered = DateTime.Now.Date,
-                    BonusScore = 0
-                };
-
-                var newUser = await _userService.AddUser(user);
-
-                return JsonResults.Success(new { newUser.Id});
-            }
-            catch (Exception ex)
-            {
-                return JsonResults.Error(400, ex.Message);
-            }
-        }
-
-        [ActionName("Authorization")]
-        [HttpPost]
-        public async Task<object> Authorization(AuthorizationRequest model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
-            }
-
-            var user = await _userService.SearchAuthorizationUserAsync(model.Email);
-
-            if (user == null)
-            {
-                return JsonResults.Error(402, "User not registered");
-            }
-
-            if (user.IsBlocked == true)
-            {
-                return JsonResults.Error(403, "The user is blocked");
-            }
-
-            try
-            {
-                var isCorrectPassword = _userService.CheckUserCorrectPassword(model.Password, user.Password);
-
-                if (!isCorrectPassword)
-                {
-                    return JsonResults.Error(405, "Incorrect password");
-                }
-
-                return JsonResults.Success(new {user.Id, user.IsAdministration});
-            }
-            catch (Exception ex)
-            {
-                return JsonResults.Error(400, ex.Message);
-            }
-        }
-
+        
         // DELETE: api/Users/5
         [ActionName("DeleteUser")]
         [HttpDelete]

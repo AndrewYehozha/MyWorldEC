@@ -16,6 +16,7 @@ using WebApplication.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class ChildrenController : ApiController
     {
         private ChildrenService _childrenService = new ChildrenService();
