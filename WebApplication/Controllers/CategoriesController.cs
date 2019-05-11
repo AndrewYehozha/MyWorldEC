@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
     [Authorize]
     public class CategoriesController : ApiController
     {
-        CategoryService _categoryService = new CategoryService();
+        private CategoryService _categoryService = new CategoryService();
 
         // GET: api/Categories
         [ActionName("GetCategories")]

@@ -135,6 +135,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ServiceId" Type="int" />
           <Property Name="UserId" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsUse" Type="bit" Nullable="false" />
           <Property Name="PreOrder_Date" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
@@ -683,6 +685,8 @@
           <Property Name="PreOrder_Date" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Tickets_Services" FromRole="Tickets" ToRole="Services" />
           <NavigationProperty Name="User" Relationship="Self.FK_Bilet_User" FromRole="Tickets" ToRole="Users" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="IsUse" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1218,6 +1222,8 @@
           <EntitySetMapping Name="Tickets">
             <EntityTypeMapping TypeName="MyWorldECModel.Ticket">
               <MappingFragment StoreEntitySet="Tickets">
+                <ScalarProperty Name="IsUse" ColumnName="IsUse" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />

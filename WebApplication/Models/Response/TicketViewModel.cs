@@ -11,5 +11,7 @@ namespace WebApplication.Models.Response
         public int? ServiceId { get; set; }
         public int? UserId { get; set; }
         public System.DateTime PreOrder_Date { get; set; }
+        public decimal Price { get; set; }
+        public bool IsUse { get; set; }
     }
 }

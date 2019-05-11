@@ -186,6 +186,7 @@
     <Compile Include="Controllers\Discount_CardsController.cs" />
     <Compile Include="Controllers\Entertainment_CentersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\PreferencesController.cs" />
     <Compile Include="Controllers\RatingsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Models\Request\ChildrenRequest.cs" />
     <Compile Include="Models\Request\Discount_CardRequest.cs" />
     <Compile Include="Models\Request\Entertainment_CentersRequest.cs" />
+    <Compile Include="Models\Request\PaymentRequest.cs" />
     <Compile Include="Models\Request\PreferenceRequest.cs" />
     <Compile Include="Models\Request\RatingRequest.cs" />
     <Compile Include="Models\Request\ServiceRequest.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="Models\Response\ChildrenViewModel.cs" />
     <Compile Include="Models\Response\Discount_CardViewModel.cs" />
     <Compile Include="Models\Response\Entertainment_CentersViewModel.cs" />
+    <Compile Include="Models\Response\PaymentViewModel.cs" />
     <Compile Include="Models\Response\PreferenceViewModel.cs" />
     <Compile Include="Models\Response\RatingViewModel.cs" />
     <Compile Include="Models\Response\ServiceCategoryViewModel.cs" />
@@ -285,6 +288,7 @@
     <Compile Include="Services\ChildrenService.cs" />
     <Compile Include="Services\Discount_CardService.cs" />
     <Compile Include="Services\EntertainmentCenterService.cs" />
+    <Compile Include="Services\PaymentsService.cs" />
     <Compile Include="Services\PreferenceService.cs" />
     <Compile Include="Services\RatingService.cs" />
     <Compile Include="Services\ServicesService.cs" />
