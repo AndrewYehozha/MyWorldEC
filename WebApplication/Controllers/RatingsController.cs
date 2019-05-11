@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
     [Authorize]
     public class RatingsController : ApiController
     {
-        RatingService _ratingService = new RatingService();
+        private RatingService _ratingService = new RatingService();
 
         // GET: api/Ratings
         [ActionName("GetRatings")]

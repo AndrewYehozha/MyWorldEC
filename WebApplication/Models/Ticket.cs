@@ -18,7 +18,9 @@ namespace WebApplication.Models
         public Nullable<int> ServiceId { get; set; }
         public Nullable<int> UserId { get; set; }
         public System.DateTime PreOrder_Date { get; set; }
-    
+        public decimal Price { get; set; }
+        public bool IsUse { get; set; }
+
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }
     }

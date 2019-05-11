@@ -54,10 +54,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Ticket not found");
             }
 
-            var model = new TicketViewModel
-            {
-
-            };
+            var model = GetTicketModel(ticket);
 
             return JsonResults.Success(model);
         }
@@ -92,7 +89,9 @@ namespace WebApplication.Controllers
                 Id = ticket.Id,
                 ServiceId = ticket.ServiceId,
                 UserId = ticket.UserId,
-                PreOrder_Date = ticket.PreOrder_Date
+                PreOrder_Date = ticket.PreOrder_Date,
+                Price = ticket.Price,
+                IsUse = ticket.IsUse
             };
 
             return model;

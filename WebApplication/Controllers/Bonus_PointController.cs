@@ -18,7 +18,7 @@ namespace WebApplication.Controllers
     [Authorize]
     public class Bonus_PointController : ApiController
     {
-        Bonus_PointService _bonus_PointService = new Bonus_PointService();
+        private Bonus_PointService _bonus_PointService = new Bonus_PointService();
 
         // GET: api/Bonus_Points
         [ActionName("GetBonus_Points")]
