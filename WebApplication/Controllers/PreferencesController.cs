@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Preferences not found");
             }
 
-            List<PreferenceViewModel> models = new List<PreferenceViewModel>();
+            var models = new List<PreferenceViewModel>();
 
             foreach (var preference in preferences)
             {
@@ -56,6 +56,7 @@ namespace WebApplication.Controllers
             }
 
             var model = GetPreferenceModel(preference);
+
             return JsonResults.Success(model);
         }
 
@@ -71,7 +72,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Preferences not found");
             }
 
-            List<PreferenceViewModel> models = new List<PreferenceViewModel>();
+            var models = new List<PreferenceViewModel>();
 
             foreach (var preference in preferences)
             {
@@ -93,7 +94,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error();
             }
 
-            List<PreferenceViewModel> models = new List<PreferenceViewModel>();
+            var models = new List<PreferenceViewModel>();
 
             foreach (var service in services)
             {

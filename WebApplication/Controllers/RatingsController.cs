@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Ratings not found");
             }
 
-            List<RatingViewModel> models = new List<RatingViewModel>();
+            var models = new List<RatingViewModel>();
 
             foreach (var rating in ratings)
             {

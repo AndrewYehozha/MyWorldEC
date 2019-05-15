@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Discount Cards not found");
             }
 
-            List<Discount_CardViewModel> models = new List<Discount_CardViewModel>();
+            var models = new List<Discount_CardViewModel>();
 
             foreach (var discount_Card in discount_Cards)
             {
