@@ -86,11 +86,6 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<object> AddPayment(PaymentRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
-            }
-
             try
             {
                 var user = await _userService.GetUser((int)request.UserId);

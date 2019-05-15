@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Childrens not found");
             }
 
-            List<ChildrenViewModel> models = new List<ChildrenViewModel>();
+            var models = new List<ChildrenViewModel>();
 
             foreach (var children in childrens)
             {
@@ -45,16 +45,16 @@ namespace WebApplication.Controllers
 
         [ActionName("GetChildrensByUserId")]
         [HttpGet]
-        public async Task<object> GetChildrensByUserId(int userId)
+        public async Task<object> GetChildrensByUserId(int id)
         {
-            var childrens = await _childrenService.GetChildrensByUserId(userId);
+            var childrens = await _childrenService.GetChildrensByUserId(id);
 
             if (childrens == null)
             {
                 return JsonResults.Error(errorNum: 404, errorMessage: "Childrens not found");
             }
 
-            List<ChildrenViewModel> models = new List<ChildrenViewModel>();
+            var models = new List<ChildrenViewModel>();
 
             foreach (var children in childrens)
             {

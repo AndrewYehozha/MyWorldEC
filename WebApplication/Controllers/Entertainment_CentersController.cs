@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Entertainment Centers not found");
             }
 
-            List<Entertainment_CentersViewModel> models = new List<Entertainment_CentersViewModel>();
+            var models = new List<Entertainment_CentersViewModel>();
 
             foreach (var entertainmentCenter in entertainmentCenters)
             {

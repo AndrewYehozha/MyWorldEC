@@ -9,17 +9,17 @@ namespace WebApplication
     {
         public static object Success()
         {
-            return new { success = true };
+            return new { Success = true };
         }
 
         public static object Success(object data)
         {
-            return new { success = true, data };
+            return new { Success = true, data };
         }
 
         public static object Error(int errorNum = 0, string errorMessage = "")
         {
-            return new { success = false, errorNum, errorMessage };
+            return new { Success = false, ErrorNum = errorNum, ErrorMessages = errorMessage };
         }
     }
 }

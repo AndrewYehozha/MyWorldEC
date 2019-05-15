@@ -39,7 +39,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Users not found");
             }
 
-            List<UserViewModel> models = new List<UserViewModel>();
+            var models = new List<UserViewModel>();
 
             foreach (var user in users)
             {

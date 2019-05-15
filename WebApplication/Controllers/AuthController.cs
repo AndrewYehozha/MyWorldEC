@@ -37,7 +37,7 @@ namespace WebApplication.Controllers
 
             if (user.IsBlocked)
             {
-                return JsonResults.Error(403, "The user is blocked");
+                return JsonResults.Error(403, "User is blocked");
             }
 
             try
@@ -65,7 +65,14 @@ namespace WebApplication.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+                var errorMessage = ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString();
+
+                if (errorMessage == "The Email is required" || errorMessage == "Invalid Email")
+                {
+                    return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+                }
+
+                return JsonResults.Error(402, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
             }
 
             var user = await _userService.SearchAuthorizationUserAsync(model.Email);
@@ -77,7 +84,7 @@ namespace WebApplication.Controllers
 
             if (!user.IsAdministration)
             {
-                return JsonResults.Error(402, "This is not an administrator");
+                return JsonResults.Error(402, "You are not at administrator");
             }
 
             try
@@ -86,12 +93,12 @@ namespace WebApplication.Controllers
 
                 if (!isCorrectPassword)
                 {
-                    return JsonResults.Error(405, "Incorrect password");
+                    return JsonResults.Error(402, "Incorrect password");
                 }
 
                 string token = CreateToken($"{user.Id}.{user.Email}.{user.Password}");
 
-                return JsonResults.Success(new { Token = token, UserId = user.Id, IsAdmin = user.IsAdministration });
+                return JsonResults.Success(new { Token = token});
             }
             catch (Exception ex)
             {
@@ -152,7 +159,7 @@ namespace WebApplication.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
 
             //create a identity and add claims to the user which we want to log in
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[]
+            var claimsIdentity = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, username)
             });

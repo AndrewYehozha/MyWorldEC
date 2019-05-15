@@ -34,7 +34,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Services not found");
             }
 
-            List<ServicesViewModel> models = new List<ServicesViewModel>();
+            var models = new List<ServicesViewModel>();
 
             foreach (var service in services)
             {
@@ -64,16 +64,16 @@ namespace WebApplication.Controllers
         // GET: api/Services/5
         [ActionName("GetServiceByECenterId")]
         [HttpGet]
-        public async Task<object> GetServiceByECenterId(int idEC)
+        public async Task<object> GetServiceByECenterId(int id)
         {
-            var services = await _servicesService.GetServiceByECenterId(idEC);
+            var services = await _servicesService.GetServiceByECenterId(id);
 
             if (services == null)
             {
                 return JsonResults.Error(errorNum: 404, errorMessage: "Service not found");
             }
 
-            List<ServicesViewModel> models = new List<ServicesViewModel>();
+            var models = new List<ServicesViewModel>();
 
             foreach (var service in services)
             {
@@ -147,7 +147,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error();
             }
 
-            List<ServicesViewModel> models = new List<ServicesViewModel>();
+            var models = new List<ServicesViewModel>();
 
             foreach (var service in services)
             {

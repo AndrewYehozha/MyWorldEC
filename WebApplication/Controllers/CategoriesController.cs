@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(errorNum: 404, errorMessage: "Categories not found");
             }
 
-            List<CategoryViewModel> models = new List<CategoryViewModel>();
+            var models = new List<CategoryViewModel>();
 
             foreach (var category in categories)
             {
@@ -72,7 +72,7 @@ namespace WebApplication.Controllers
                 return JsonResults.Error();
             }
 
-            List<CategoryViewModel> models = new List<CategoryViewModel>();
+            var models = new List<CategoryViewModel>();
 
             foreach (var category in categories)
             {
