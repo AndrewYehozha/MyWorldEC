@@ -40,6 +40,7 @@
         <AssociationConnector Association="MyWorldECModel.FK_Service_Entertainment_Center_Service" ManuallyRouted="false" />
         <AssociationConnector Association="MyWorldECModel.FK_Tickets_Services" ManuallyRouted="false" />
         <AssociationConnector Association="MyWorldECModel.FK_Bilet_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MyWorldECModel.FK_Payments_Entertainment_Centers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

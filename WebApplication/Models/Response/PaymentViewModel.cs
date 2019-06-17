@@ -8,9 +8,9 @@ namespace WebApplication.Models.Response
     public class PaymentViewModel
     {
         public int Id { get; set; }
-        public int Entert_CenterId { get; set; }
-        public Nullable<int> ServiceId { get; set; }
-        public Nullable<int> UserId { get; set; }
+        public string Entert_CenterName { get; set; }
+        public string ServiceName { get; set; }
+        public string UserEmail { get; set; }
         public decimal Cost { get; set; }
         public System.DateTime PaymentDate { get; set; }
     }

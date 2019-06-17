@@ -33,6 +33,7 @@ namespace WebApplication.Models
         public decimal Cost { get; set; }
         public int Floor { get; set; }
         public int Hall { get; set; }
+        public int AgeFrom { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bonus_Points> Bonus_Points { get; set; }

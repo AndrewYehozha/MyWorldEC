@@ -62,6 +62,28 @@ namespace WebApplication.Controllers
         }
 
         // GET: api/Services/5
+        [ActionName("GetRecommendationService")]
+        [HttpGet]
+        public async Task<object> GetRecommendationService(int accountId, bool IsParking, bool IsChildrens, bool IsDiscCards)
+        {
+            var services = await _servicesService.GetRecommendationServices(accountId, IsParking, IsChildrens, IsDiscCards);
+
+            if (services == null)
+            {
+                return JsonResults.Error(errorNum: 404, errorMessage: "Services not found");
+            }
+
+            var models = new List<ServicesViewModel>();
+
+            foreach (var service in services)
+            {
+                models.Add(await GetServiceModelWithRatings(service, accountId));
+            }
+
+            return JsonResults.Success(models);
+        }
+
+        // GET: api/Services/5
         [ActionName("GetServiceByECenterId")]
         [HttpGet]
         public async Task<object> GetServiceByECenterId(int id)
@@ -128,6 +150,7 @@ namespace WebApplication.Controllers
                 Cost = service.Cost,
                 Floor = service.Floor,
                 Hall = service.Hall,
+                AgeFrom = service.AgeFrom,
                 Rating = ratingAvg != null ? (decimal)ratingAvg : 0,
                 userRating = userRating
             };
@@ -181,6 +204,7 @@ namespace WebApplication.Controllers
                 service.Cost = request.Cost;
                 service.Floor = request.Floor;
                 service.Hall = request.Hall;
+                service.AgeFrom = request.AgeFrom;
 
                 await _servicesService.UpdateService(service);
 
@@ -210,7 +234,8 @@ namespace WebApplication.Controllers
                     Description = request.Description,
                     Cost = request.Cost,
                     Floor = request.Floor,
-                    Hall = request.Hall
+                    Hall = request.Hall,
+                    AgeFrom = request.AgeFrom
                 };
 
                 await _servicesService.AddService(model);
@@ -274,7 +299,41 @@ namespace WebApplication.Controllers
                 Description = service.Description,
                 Cost = service.Cost,
                 Floor = service.Floor,
-                Hall = service.Hall
+                Hall = service.Hall,
+                AgeFrom = service.AgeFrom
+            };
+
+            return model;
+        }
+
+        private async Task<ServicesViewModel> GetServiceModelWithRatings(Service service, int userId)
+        {
+            var categories = await _servicesService.GetCategoryToService(service.Id);
+            var ratingAvg = await _ratingService.AvgRating(service.Id);
+            var userRating = await _ratingService.GetRatingByuserId(service.Id, userId);
+            var categoriesView = new List<CategoryViewModel>();
+
+            foreach (var item in categories)
+            {
+                categoriesView.Add(new CategoryViewModel
+                {
+                    Id = item.Id,
+                    Name = item.Name
+                });
+            }
+
+            var model = new ServiceCategoryViewModel
+            {
+                Id = service.Id,
+                Name = service.Name,
+                Description = service.Description,
+                Categories = categoriesView,
+                Cost = service.Cost,
+                Floor = service.Floor,
+                Hall = service.Hall,
+                AgeFrom = service.AgeFrom,
+                Rating = ratingAvg != null ? (decimal)ratingAvg : 0,
+                userRating = userRating
             };
 
             return model;

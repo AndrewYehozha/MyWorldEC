@@ -140,6 +140,39 @@ namespace WebApplication.Controllers
             return JsonResults.Success(model);
         }
 
+        [ActionName("AddUser")]
+        [HttpPost]
+        public async Task<object> AddUser(User request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
+            try
+            {
+                var model = new User
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Email = request.Email,
+                    Password = _userService.HashPassword(request.Password),
+                    IsAdministration = request.IsAdministration,
+                    IsBlocked = false,
+                    DateRegistered = DateTime.Now.Date,
+                    BonusScore = request.BonusScore
+                };
+
+                await _userService.AddUser(model);
+
+                return JsonResults.Success();
+            }
+            catch (Exception ex)
+            {
+                return JsonResults.Error(400, ex.Message);
+            }
+        }
+
         // PUT: api/Users/EditUser
         [ActionName("EditUser")]
         [HttpPost]
@@ -177,13 +210,58 @@ namespace WebApplication.Controllers
                 return JsonResults.Error(400, ex.Message);
             }
         }
-        
+
+        [ActionName("EditUserForAdmin")]
+        [HttpPost]
+        public async Task<object> EditUserForAdmin(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
+            try
+            {
+                var users = await _userService.GetUser(user.Id);
+
+                if (users == null)
+                {
+                    return JsonResults.Error(404, "It`s user not found");
+                }
+
+                users.FirstName = user.FirstName;
+                users.LastName = user.LastName;
+                users.Country = user.Country;
+                users.City = user.City;
+                users.Address = user.Address;
+                users.Phone = user.Phone;
+                users.Email = user.Email;
+                users.Birsday = user.Birsday;
+                users.IsBlocked = user.IsBlocked;
+                users.IsAdministration = user.IsAdministration;
+                users.BonusScore = user.BonusScore;
+
+                if (!String.IsNullOrEmpty(user.Password))
+                {
+                    users.Password = _userService.HashPassword(user.Password);
+                }
+
+                await _userService.UpdateUser(users);
+
+                return JsonResults.Success();
+            }
+            catch (Exception ex)
+            {
+                return JsonResults.Error(400, ex.Message);
+            }
+        }
+
         // DELETE: api/Users/5
         [ActionName("DeleteUser")]
         [HttpDelete]
         public async Task<object> DeleteUser(int id)
         {
-            User user = await _userService.GetUser(id);
+            var user = await _userService.GetUser(id);
 
             if(user == null)
             {
@@ -191,6 +269,27 @@ namespace WebApplication.Controllers
             }
 
             await _userService.DeleteUser(user);
+
+            return JsonResults.Success();
+        }
+
+        [ActionName("ChangePassword")]
+        [HttpPost]
+        public async Task<object> ChangePassword(ChangePasswordRequest request)
+        {
+            var user = await _userService.GetUser(request.IdUser);
+
+            if (user == null)
+            {
+                return JsonResults.Error(401, "User is already registered");
+            }
+
+            if (_userService.HashPassword(request.OldPassword) != user.Password)
+            {
+                return JsonResults.Error(402, "Incorrect password");
+            }
+
+            await _userService.ChangePassword(request.NewPassword, user);
 
             return JsonResults.Success();
         }

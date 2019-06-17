@@ -23,5 +23,6 @@ namespace WebApplication.Models
     
         public virtual User User { get; set; }
         public virtual Service Service { get; set; }
+        public virtual Entertainment_Centers Entertainment_Centers { get; set; }
     }
 }

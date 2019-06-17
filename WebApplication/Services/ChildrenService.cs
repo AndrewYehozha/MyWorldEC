@@ -52,5 +52,14 @@ namespace WebApplication.Services
             db.Childrens.Remove(children);
             await db.SaveChangesAsync();
         }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            this.Dispose(disposing);
+        }
     }
 }

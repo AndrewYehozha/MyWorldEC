@@ -35,14 +35,14 @@ namespace WebApplication.Services
 
         public async Task<decimal?> AvgRating(int serviceId)
         {
-            var ratingAvg = await db.Ratings.Where(x => x.Id == serviceId).Select(r => r.Rating1).AverageAsync();
+            var ratingAvg = await db.Ratings.Where(x => x.ServiceId == serviceId).Select(r => r.Rating1).DefaultIfEmpty(0).AverageAsync();
 
             return ratingAvg;
         }
 
         public async Task<decimal?> GetRatingByuserId(int serviceId, int userId)
         {
-            var rating = await db.Ratings.Where(x => x.UserId == userId && x.Id == serviceId).Select(r => r.Rating1).FirstOrDefaultAsync();
+            var rating = await db.Ratings.Where(x => x.UserId == userId && x.ServiceId == serviceId).Select(r => r.Rating1).FirstOrDefaultAsync();
 
             return rating;
         }
@@ -65,6 +65,15 @@ namespace WebApplication.Services
         {
             db.Ratings.Remove(rating);
             await db.SaveChangesAsync();
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            this.Dispose(disposing);
         }
     }
 }

@@ -58,5 +58,14 @@ namespace WebApplication.Services
             db.Discount_Cards.Remove(discount_Card);
             await db.SaveChangesAsync();
         }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            this.Dispose(disposing);
+        }
     }
 }

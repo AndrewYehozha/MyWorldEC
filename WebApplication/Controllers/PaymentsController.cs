@@ -154,10 +154,10 @@ namespace WebApplication.Controllers
             var model = new PaymentViewModel
             {
                 Id = payment.Id,
-                Entert_CenterId = payment.Entert_CenterId,
-                ServiceId = payment.ServiceId,
-                UserId = payment.UserId,
+                Entert_CenterName = payment.Entertainment_Centers.Name,
+                ServiceName = payment.Service.Name,
                 PaymentDate = payment.PaymentDate,
+                UserEmail = payment.User.Email,
                 Cost = payment.Cost
             };
 

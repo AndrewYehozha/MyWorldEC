@@ -43,6 +43,80 @@ namespace WebApplication.Controllers
             return JsonResults.Success(models);
         }
 
+        [ActionName("GetCategoriesServices")]
+        [HttpGet]
+        public async Task<object> GetCategoriesServices()
+        {
+            var categories = await _categoryService.GetCategories_Services();
+
+            if (categories == null)
+            {
+                return JsonResults.Error(errorNum: 404, errorMessage: "Categories in Service not found");
+            }
+
+            var model = new List<Categories_ServicesResponse>();
+
+            foreach (var category_service in categories)
+            {
+                model.Add(new Categories_ServicesResponse {
+                    Id = category_service.Id,
+                    IdCategories = category_service.IdCategories,
+                    IdServices = category_service.IdServices,
+                    Category = (new CategoryViewModel {
+                        Id = category_service.Category.Id,
+                        Name = category_service.Category.Name
+                    }),
+                    Service = (new ServicesViewModel {
+                        Id = category_service.Service.Id,
+                        AgeFrom = category_service.Service.AgeFrom,
+                        Cost = category_service.Service.Cost,
+                        Description = category_service.Service.Description,
+                        Floor = category_service.Service.Floor,
+                        Hall = category_service.Service.Hall,
+                        Name = category_service.Service.Name
+                    })
+                });
+            }
+
+            return JsonResults.Success(model);
+        }
+
+        [ActionName("GetCategoryService")]
+        [HttpGet]
+        public async Task<object> GetCategoryService(int id)
+        {
+            var categoryService = await _categoryService.GetCategoryService(id);
+
+            if (categoryService == null)
+            {
+                return JsonResults.Error(errorNum: 404, errorMessage: "Categories in Service not found");
+            }
+
+            var model = new Categories_ServicesResponse
+            {
+                    Id = categoryService.Id,
+                    IdCategories = categoryService.IdCategories,
+                    IdServices = categoryService.IdServices,
+                    Category = (new CategoryViewModel
+                    {
+                        Id = categoryService.Category.Id,
+                        Name = categoryService.Category.Name
+                    }),
+                    Service = (new ServicesViewModel
+                    {
+                        Id = categoryService.Service.Id,
+                        AgeFrom = categoryService.Service.AgeFrom,
+                        Cost = categoryService.Service.Cost,
+                        Description = categoryService.Service.Description,
+                        Floor = categoryService.Service.Floor,
+                        Hall = categoryService.Service.Hall,
+                        Name = categoryService.Service.Name
+                    })
+            };
+
+            return JsonResults.Success(model);
+        }
+
         // GET: api/Categories/5
         [ActionName("GetCategory")]
         [HttpGet]
@@ -113,6 +187,36 @@ namespace WebApplication.Controllers
             }
         }
 
+        [ActionName("EditCategoryToService")]
+        [HttpPost]
+        public async Task<object> EditCategoryToService(Categories_Services request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
+            try
+            {
+                var categoryToService = await _categoryService.GetCategoryService(request.Id);
+
+                if (categoryToService == null)
+                {
+                    return JsonResults.Error(404, "It`s category not found");
+                }
+
+                categoryToService.IdCategories = request.IdCategories;
+
+                await _categoryService.UpdateCategoryToService(categoryToService);
+
+                return JsonResults.Success();
+            }
+            catch (Exception ex)
+            {
+                return JsonResults.Error(400, ex.Message);
+            }
+        }
+
         // POST: api/Categories
         [ActionName("AddCategory")]
         [HttpPost]
@@ -140,6 +244,34 @@ namespace WebApplication.Controllers
             }
         }
 
+        // POST: api/Categories
+        [ActionName("AddCategoryToService")]
+        [HttpPost]
+        public async Task<object> AddCategoryToService(Categories_Services request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return JsonResults.Error(400, ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
+            try
+            {
+                var model = new Categories_Services
+                {
+                    IdCategories = request.IdCategories,
+                    IdServices = request.IdServices
+                };
+
+                await _categoryService.AddCategoryToService(model);
+
+                return JsonResults.Success();
+            }
+            catch (Exception ex)
+            {
+                return JsonResults.Error(400, ex.Message);
+            }
+        }
+
         // DELETE: api/Categories/5
         [ActionName("DeleteCategory")]
         [HttpDelete]
@@ -153,6 +285,22 @@ namespace WebApplication.Controllers
             }
 
             await _categoryService.DeleteCategory(category);
+
+            return JsonResults.Success();
+        }
+
+        [ActionName("DeleteCategoryService")]
+        [HttpDelete]
+        public async Task<object> DeleteCategoryService(int id)
+        {
+            var categoryService = await _categoryService.GetCategoryService(id);
+
+            if (categoryService == null)
+            {
+                return JsonResults.Error();
+            }
+
+            await _categoryService.DeleteCategoryService(categoryService);
 
             return JsonResults.Success();
         }
