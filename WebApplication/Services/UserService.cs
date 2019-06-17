@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using WebApplication.Models;
+using WebApplication.Models.Request;
 
 namespace WebApplication.Services
 {
@@ -50,6 +51,12 @@ namespace WebApplication.Services
             await db.SaveChangesAsync();
         }
 
+        public async Task ChangePassword(string newPassword, User user)
+        {
+            user.Password = HashPassword(newPassword);
+            await db.SaveChangesAsync();
+        }
+
         public async Task<bool> CheckUserByEmailAsync(string email)
         {
             var user = await db.Users.Where(m => m.Email == email).FirstOrDefaultAsync();
@@ -67,6 +74,15 @@ namespace WebApplication.Services
         public bool CheckUserCorrectPassword(string enteredPassword, string hashUserPassword)
         {
             return HashPassword(enteredPassword) == hashUserPassword ? true : false;
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            this.Dispose(disposing);
         }
 
         // Util

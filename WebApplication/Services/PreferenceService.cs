@@ -77,5 +77,14 @@ namespace WebApplication.Services
             db.Preferences.Remove(preference);
             await db.SaveChangesAsync();
         }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            this.Dispose(disposing);
+        }
     }
 }

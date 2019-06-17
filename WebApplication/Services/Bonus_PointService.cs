@@ -39,5 +39,14 @@ namespace WebApplication.Services
 
             await db.SaveChangesAsync();
         }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            this.Dispose(disposing);
+        }
     }
 }

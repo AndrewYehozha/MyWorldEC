@@ -88,6 +88,7 @@ namespace WebApplication.Controllers
             {
                 Id = ticket.Id,
                 ServiceId = ticket.ServiceId,
+                ServiceName = ticket.Service.Name,
                 UserId = ticket.UserId,
                 PreOrder_Date = ticket.PreOrder_Date,
                 Price = ticket.Price,

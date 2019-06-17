@@ -247,6 +247,7 @@
     </Compile>
     <Compile Include="Models\Request\AuthorizationRequest.cs" />
     <Compile Include="Models\Request\CategoryRequest.cs" />
+    <Compile Include="Models\Request\ChangePasswordRequest.cs" />
     <Compile Include="Models\Request\ChildrenRequest.cs" />
     <Compile Include="Models\Request\Discount_CardRequest.cs" />
     <Compile Include="Models\Request\Entertainment_CentersRequest.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="Models\Request\UserEditRequest.cs" />
     <Compile Include="Models\Request\UserRegistredRequest.cs" />
     <Compile Include="Models\Response\Bonus_PointViewModel.cs" />
+    <Compile Include="Models\Response\Categories_ServicesResponse.cs" />
     <Compile Include="Models\Response\CategoryViewModel.cs" />
     <Compile Include="Models\Response\ChildrenViewModel.cs" />
     <Compile Include="Models\Response\Discount_CardViewModel.cs" />
@@ -266,6 +268,7 @@
     <Compile Include="Models\Response\PreferenceViewModel.cs" />
     <Compile Include="Models\Response\RatingViewModel.cs" />
     <Compile Include="Models\Response\ServiceCategoryViewModel.cs" />
+    <Compile Include="Models\Response\ServicesToECResponse.cs" />
     <Compile Include="Models\Response\ServicesViewModel.cs" />
     <Compile Include="Models\Response\TicketViewModel.cs" />
     <Compile Include="Models\Response\UserViewModel.cs" />

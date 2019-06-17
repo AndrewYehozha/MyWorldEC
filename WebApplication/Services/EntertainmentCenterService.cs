@@ -11,12 +11,26 @@ namespace WebApplication.Services
     public class EntertainmentCenterService
     {
         private MyWorldECEntities4 db = new MyWorldECEntities4();
-
+        
         public async Task<IEnumerable<Entertainment_Centers>> GetEntertainment_Centers()
         {
             var entertainment_Centers = await db.Entertainment_Centers.ToListAsync();
 
             return entertainment_Centers;
+        }
+
+        public async Task<IEnumerable<Services_Entertainment_Centers>> GetServicesToEC()
+        {
+            var servicesToEC = await db.Services_Entertainment_Centers.Include(c => c.Entertainment_Centers).Include(c => c.Service).ToListAsync();
+
+            return servicesToEC;
+        }
+
+        public async Task<Services_Entertainment_Centers> GetServiceToEC(int id)
+        {
+            var servicesToEC = await db.Services_Entertainment_Centers.FindAsync(id);
+
+            return servicesToEC;
         }
 
         public async Task<Entertainment_Centers> GetEntertainment_Center(int id)
@@ -29,6 +43,12 @@ namespace WebApplication.Services
         public async Task UpdateEntertainment_Center(Entertainment_Centers entertainment_Center)
         {
             db.Entry(entertainment_Center).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+        }
+
+        public async Task UpdateServiceToEC(Services_Entertainment_Centers serviceToEC)
+        {
+            db.Entry(serviceToEC).State = EntityState.Modified;
             await db.SaveChangesAsync();
         }
 
@@ -57,6 +77,21 @@ namespace WebApplication.Services
         {
             db.Entertainment_Centers.Remove(entertainment_Center);
             await db.SaveChangesAsync();
+        }
+
+        public async Task DeleteServiceToEC(Services_Entertainment_Centers serviceToEC)
+        {
+            db.Services_Entertainment_Centers.Remove(serviceToEC);
+            await db.SaveChangesAsync();
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            this.Dispose(disposing);
         }
     }
 }

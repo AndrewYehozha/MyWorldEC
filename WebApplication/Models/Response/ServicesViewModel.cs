@@ -24,5 +24,8 @@ namespace WebApplication.Models.Response
 
         [Required(ErrorMessage = "The Hall is required")]
         public int Hall { get; set; }
+
+        [Required(ErrorMessage = "The AgeFrom is required")]
+        public int AgeFrom { get; set; }
     }
 }

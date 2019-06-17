@@ -40,5 +40,14 @@ namespace WebApplication.Services
 
             return paymen;
         }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            this.Dispose(disposing);
+        }
     }
 }

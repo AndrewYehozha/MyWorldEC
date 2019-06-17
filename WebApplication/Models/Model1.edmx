@@ -85,7 +85,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Entert_CenterId" Type="int" Nullable="false" />
+          <Property Name="Entert_CenterId" Type="int" />
           <Property Name="ServiceId" Type="int" />
           <Property Name="UserId" Type="int" />
           <Property Name="Cost" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -117,6 +117,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Cost" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="AgeFrom" Type="int" Nullable="false" />
           <Property Name="Floor" Type="int" Nullable="false" />
           <Property Name="Hall" Type="int" Nullable="false" />
         </EntityType>
@@ -316,6 +317,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Payments_Entertainment_Centers">
+          <End Role="Entertainment_Centers" Type="Self.Entertainment_Centers" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entertainment_Centers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="Entert_CenterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Payments_Services">
           <End Role="Services" Type="Self.Services" Multiplicity="0..1" />
           <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
@@ -486,6 +499,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Payments" EntitySet="Payments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Payments_Entertainment_Centers" Association="Self.FK_Payments_Entertainment_Centers">
+            <End Role="Entertainment_Centers" EntitySet="Entertainment_Centers" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
           <AssociationSet Name="FK_Payments_Services" Association="Self.FK_Payments_Services">
             <End Role="Services" EntitySet="Services" />
             <End Role="Payments" EntitySet="Payments" />
@@ -598,6 +615,7 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsParking" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Services_Entertainment_Centers" Relationship="Self.FK_Service_Entertainment_Center_Entertainment_Center" FromRole="Entertainment_Centers" ToRole="Services_Entertainment_Centers" />
+          <NavigationProperty Name="Payments" Relationship="MyWorldECModel.FK_Payments_Entertainment_Centers" FromRole="Entertainment_Centers" ToRole="Payment" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -616,13 +634,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Entert_CenterId" Type="Int32" Nullable="false" />
+          <Property Name="Entert_CenterId" Type="Int32" />
           <Property Name="ServiceId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="Cost" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="User" Relationship="Self.FK_Payment_User" FromRole="Payments" ToRole="Users" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Payments_Services" FromRole="Payments" ToRole="Services" />
+          <NavigationProperty Name="Entertainment_Centers" Relationship="MyWorldECModel.FK_Payments_Entertainment_Centers" FromRole="Payment" ToRole="Entertainment_Centers" />
         </EntityType>
         <EntityType Name="Preference">
           <Key>
@@ -664,6 +683,7 @@
           <NavigationProperty Name="Ratings" Relationship="Self.FK_Rating_Service" FromRole="Services" ToRole="Ratings" />
           <NavigationProperty Name="Services_Entertainment_Centers" Relationship="Self.FK_Service_Entertainment_Center_Service" FromRole="Services" ToRole="Services_Entertainment_Centers" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK_Tickets_Services" FromRole="Services" ToRole="Tickets" />
+          <Property Name="AgeFrom" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Services_Entertainment_Centers">
           <Key>
@@ -1076,7 +1096,23 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
+          <AssociationSet Name="FK_Payments_Entertainment_Centers" Association="MyWorldECModel.FK_Payments_Entertainment_Centers">
+            <End Role="Entertainment_Centers" EntitySet="Entertainment_Centers" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Payments_Entertainment_Centers">
+          <End Type="MyWorldECModel.Entertainment_Centers" Role="Entertainment_Centers" Multiplicity="0..1" />
+          <End Type="MyWorldECModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entertainment_Centers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="Entert_CenterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1201,6 +1237,7 @@
           <EntitySetMapping Name="Services">
             <EntityTypeMapping TypeName="MyWorldECModel.Service">
               <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="AgeFrom" ColumnName="AgeFrom" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

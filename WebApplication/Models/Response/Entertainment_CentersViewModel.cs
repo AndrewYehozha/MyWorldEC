@@ -16,11 +16,11 @@ namespace WebApplication.Models.Response
         [Required(ErrorMessage = "The Owner is required")]
         public string Owner { get; set; }
 
-        [Required(ErrorMessage = "The City is required")]
+        [Required(ErrorMessage = "The Address is required")]
         public string Address { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^(\+)?(\d{10})(\d{1,4})?$", ErrorMessage = "Invalid Phone number")]
+        [RegularExpression(@"^(\+)?(\d{9})(\d{1,4})?$", ErrorMessage = "Invalid Phone number")]
         public string Phone { get; set; }
 
         [Required(ErrorMessage = "The Email is required")]
